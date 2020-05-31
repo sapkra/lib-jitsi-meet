@@ -34,4 +34,4 @@ Word.prototype.getEndTime = function() {
     return this.end;
 };
 
-module.exports = Word;
+export default Word;

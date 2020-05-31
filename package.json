@@ -1,6 +1,6 @@
 {
-  "name": "lib-jitsi-meet",
-  "version": "0.0.0",
+  "name": "@lyno/lib-jitsi-meet",
+  "version": "2.5390.0",
   "description": "JS library for accessing Jitsi server side deployments",
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "@babel/plugin-transform-flow-strip-types": "7.0.0",
     "@babel/preset-env": "7.1.0",
     "@babel/preset-flow": "7.0.0",
+    "@types/node": "14.14.22",
     "babel-eslint": "10.0.1",
     "babel-loader": "8.0.4",
     "core-js": "2.5.1",
@@ -55,19 +56,25 @@
     "karma-jasmine": "3.1.1",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "4.0.2",
+    "npm-dts-webpack-plugin": "1.3.6",
     "string-replace-loader": "2.1.1",
+    "typescript": "4.2.0-beta",
     "webpack": "4.43.0",
     "webpack-bundle-analyzer": "3.4.1",
     "webpack-cli": "3.3.11"
   },
   "scripts": {
     "lint": "eslint . && flow",
-    "postinstall": "webpack -p",
+    "build": "webpack -p",
     "test": "karma start karma.conf.js",
     "test-watch": "karma start karma.conf.js --no-single-run",
     "validate": "npm ls",
+    "prepack": "npm install && npm run build",
+    "release": "npm publish --access public .",
+    "release:beta": "npm run release --tag beta",
     "watch": "webpack --config webpack.config.js --watch --mode development"
   },
-  "main": "./index.js",
+  "main": "./lib-jitsi-meet.min.js",
+  "types": "./index.d.ts",
   "license": "Apache-2.0"
 }

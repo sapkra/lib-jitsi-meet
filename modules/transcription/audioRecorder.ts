@@ -257,7 +257,7 @@ AudioRecorder.prototype.download = function() {
         const a = document.createElement('a');
 
         document.body.appendChild(a);
-        a.style = 'display: none';
+        a.style.display = 'none';
         a.href = url;
         a.download = `test.${this.fileType.split('/')[1]}`;
         a.click();
@@ -303,4 +303,4 @@ AudioRecorder.prototype.getFileType = function() {
 /**
  * export the main object AudioRecorder
  */
-module.exports = AudioRecorder;
+export default AudioRecorder;

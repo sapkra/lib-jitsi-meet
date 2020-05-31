@@ -1,5 +1,6 @@
 /* global __dirname */
 
+// const NpmDtsPlugin = require('npm-dts-webpack-plugin');
 const process = require('process');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -62,7 +63,7 @@ module.exports = {
                     '@babel/plugin-proposal-export-namespace-from'
                 ]
             },
-            test: /\.js$/
+            test: /\.(js|ts)$/
         } ]
     },
     node: {
@@ -84,7 +85,11 @@ module.exports = {
         maxAssetSize: 750 * 1024,
         maxEntrypointSize: 750 * 1024
     },
+    resolve: {
+        extensions: [ '.ts', '.js' ]
+    },
     plugins: [
+        // new NpmDtsPlugin({ logLevel: 'debug' }),
         analyzeBundle
             && new BundleAnalyzerPlugin({
                 analyzerMode: 'disabled',

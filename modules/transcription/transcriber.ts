@@ -357,4 +357,4 @@ Transcriber.prototype.reset = function() {
     this.lineLength = 0;
 };
 
-module.exports = Transcriber;
+export default Transcriber;

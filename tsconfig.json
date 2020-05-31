@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "noEmit": false,
+    "declaration": true,
+    "sourceMap": true,
+    "allowJs": true,
+    // "checkJs": true,
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "outDir": "dist",
+  },
+  "include": [
+    "**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "flow-typed",
+    "doc",
+    "dist",
+    "**/*.spec.js",
+    "*.conf*.js",
+    "webpack*.js",
+    "index.d.ts",
+  ]
+}

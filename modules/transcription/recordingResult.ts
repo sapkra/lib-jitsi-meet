@@ -19,4 +19,4 @@ const RecordingResult = function(blob, name, startTime, wordArray) {
 
 /* eslint-enable max-params */
 
-module.exports = RecordingResult;
+export default RecordingResult;
