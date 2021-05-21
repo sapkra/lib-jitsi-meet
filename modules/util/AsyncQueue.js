@@ -1,6 +1,6 @@
 /* global __filename */
 
-import async from 'async';
+import { queue } from 'async';
 import { getLogger } from 'jitsi-meet-logger';
 
 const logger = getLogger(__filename);
@@ -13,7 +13,7 @@ export default class AsyncQueue {
      * Creates new instance.
      */
     constructor() {
-        this._queue = async.queue(this._processQueueTasks.bind(this), 1);
+        this._queue = queue(this._processQueueTasks.bind(this), 1);
         this._stopped = false;
     }
 

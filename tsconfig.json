@@ -1,23 +1,28 @@
 {
-  // Change this to match your project
-  "include": [
-    "/Jitsi*.js",
-    "/connection_optimization/**/*.js",
-    "/modules/**/*.js",
-    "/service/**/*.js"
-  ],
   "compilerOptions": {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
+    "target": "es6",
+    "module": "commonjs",
+    "declaration": false,
+    "sourceMap": true,
     "allowJs": true,
-    // Generate d.ts files
-    "declaration": true,
-    // This compiler run should
-    // only output d.ts files
-    "emitDeclarationOnly": true,
-    // Types should go into this directory.
-    // Removing this would place the .d.ts files
-    // next to the .js files
-    "outDir": "types/generated"
-  }
+    // "checkJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "outDir": "dist",
+  },
+  "exclude": [
+    "flow-typed",
+    "doc",
+    "dist",
+    "**/*.spec.js",
+    "*.conf*.js",
+    "webpack*.js",
+    "lib-jitsi-meet.*.js",
+    "types"
+  ]
 }

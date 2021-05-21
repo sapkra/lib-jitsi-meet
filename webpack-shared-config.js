@@ -63,7 +63,7 @@ module.exports = {
                     '@babel/plugin-proposal-nullish-coalescing-operator'
                 ]
             },
-            test: /\.js$/
+            test: /\.(js|ts)$/
         } ]
     },
     node: {
@@ -84,6 +84,9 @@ module.exports = {
         hints: minimize ? 'error' : false,
         maxAssetSize: 750 * 1024,
         maxEntrypointSize: 750 * 1024
+    },
+    resolve: {
+        extensions: [ '.ts', '.js' ]
     },
     plugins: [
         analyzeBundle
