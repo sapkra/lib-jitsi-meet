@@ -22,8 +22,8 @@ export default class ChatRoom extends Listenable {
   setParticipantPropertyListener: ( listener: unknown ) => void; // TODO:
   supportsRestartByTerminate: () => boolean;
   processNode: ( node: unknown, from: unknown ) => void; // TODO:
-  sendMessage: ( message: unknown, elementName: string, nickname?: unknown ) => void; // TODO:
-  sendPrivateMessage: ( id: unknown, message: unknown, elementName: string, nickname?: unknown ) => void; // TODO:
+  sendMessage: ( message: unknown, elementName: string ) => void; // TODO:
+  sendPrivateMessage: ( id: unknown, message: unknown, elementName: string ) => void; // TODO:
   setSubject: ( subject: string ) => void;
   onParticipantLeft: ( jid: string, skipEvents?: boolean ) => void;
   onPresenceUnavailable: ( pres: unknown, from: unknown ) => void; // TODO:

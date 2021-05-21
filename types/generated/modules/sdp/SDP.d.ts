@@ -31,7 +31,7 @@ export default class SDP {
     removeUdpCandidates: boolean;
     getMediaSsrcMap(): {};
     containsSSRC(ssrc: any): boolean;
-    toJingle(elem: any, thecreator: any): any;
+    toJingle(elem: any, thecreator: any, localEndpointId: any): any;
     transportToJingle(mediaindex: any, elem: any): void;
     rtcpFbToJingle(mediaindex: any, elem: any, payloadtype: any): void;
     rtcpFbFromJingle(elem: any, payloadtype: any): string;

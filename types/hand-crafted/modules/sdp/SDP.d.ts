@@ -7,7 +7,7 @@ export default class SDP {
   removeUdpCandidates: boolean;
   getMediaSsrcMap: () => unknown; // TODO:
   containsSSRC: ( ssrc: unknown ) => boolean; // TODO:
-  toJingle: ( elem: unknown, thecreator: unknown ) => unknown; // TODO:
+  toJingle: ( elem: unknown, thecreator: unknown, localEndpointId: unknown ) => unknown; // TODO:
   transportToJingle: ( mediaindex: unknown, elem: unknown ) => unknown; // TODO:
   rtcpFbToJingle: ( mediaindex: unknown, elem: unknown, payloadtype: unknown ) => unknown; // TODO:
   rtcpFbFromJingle: ( elem: unknown, payloadtype: unknown ) => unknown; // TODO:

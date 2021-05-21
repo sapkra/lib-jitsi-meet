@@ -131,17 +131,15 @@ export default class ChatRoom extends Listenable {
      * Send text message to the other participants in the conference
      * @param message
      * @param elementName
-     * @param nickname
      */
-    sendMessage(message: any, elementName: any, nickname: any): void;
+    sendMessage(message: any, elementName: any): void;
     /**
      * Send private text message to another participant of the conference
      * @param id id/muc resource of the receiver
      * @param message
      * @param elementName
-     * @param nickname
      */
-    sendPrivateMessage(id: any, message: any, elementName: any, nickname: any): void;
+    sendPrivateMessage(id: any, message: any, elementName: any): void;
     /**
      *
      * @param subject
