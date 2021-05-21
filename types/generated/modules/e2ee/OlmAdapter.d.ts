@@ -33,15 +33,12 @@ export class OlmAdapter extends Listenable {
     _init: Deferred;
     _key: boolean | Uint8Array;
     _keyIndex: number;
-    _reqs: any;
+    _reqs: Map<any, any>;
+    _sessionInitialization: Deferred;
     /**
-     * Updates the current participant key and distributes it to all participants in the conference
-     * by sending a key-info message.
-     *
-     * @param {Uint8Array|boolean} key - The new key.
-     * @returns {number}
+     * Starts new olm sessions with every other participant that has the participantId "smaller" the localParticipantId.
      */
-    updateCurrentKey(key: Uint8Array | boolean): number;
+    initSessions(): Promise<void>;
     /**
      * Updates the current participant key and distributes it to all participants in the conference
      * by sending a key-info message.
@@ -50,6 +47,17 @@ export class OlmAdapter extends Listenable {
      * @retrns {Promise<Number>}
      */
     updateKey(key: Uint8Array | boolean): Promise<number>;
+    /**
+     * Updates the current participant key.
+     * @param {Uint8Array|boolean} key - The new key.
+     * @returns {number}
+    */
+    updateCurrentKey(key: Uint8Array | boolean): number;
+    /**
+     * Frees the olmData session for the given participant.
+     *
+     */
+    clearParticipantSession(participant: any): void;
     /**
      * Internal helper to bootstrap the olm library.
      *
@@ -76,13 +84,6 @@ export class OlmAdapter extends Listenable {
      */
     private _getParticipantOlmData;
     /**
-     * Handles the conference joined event. Upon joining a conference, the participant
-     * who just joined will start new olm sessions with every other participant.
-     *
-     * @private
-     */
-    private _onConferenceJoined;
-    /**
      * Handles leaving the conference, cleaning up olm sessions.
      *
      * @private
@@ -101,6 +102,16 @@ export class OlmAdapter extends Listenable {
      * @private
      */
     private _onParticipantLeft;
+    /**
+    * Handles an update in a participant's presence property.
+    *
+    * @param {JitsiParticipant} participant - The participant.
+    * @param {string} name - The name of the property that changed.
+    * @param {*} oldValue - The property's previous value.
+    * @param {*} newValue - The property's new value.
+    * @private
+    */
+    private _onParticipantPropertyChanged;
     /**
      * Builds and sends an error message to the target participant.
      *

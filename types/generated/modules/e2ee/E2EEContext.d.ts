@@ -45,10 +45,4 @@ export default class E2EEcontext {
      * @param {Number} keyIndex - the key index.
      */
     setKey(participantId: string, key: Uint8Array | boolean, keyIndex: number): void;
-    /**
-     * Set the E2EE signature key for the specified participant.
-     * @param {string} participantId - the ID of the participant who's key we are setting.
-     * @param {CryptoKey} key - the webcrypto key to set.
-     */
-    setSignatureKey(participantId: string, key: CryptoKey): void;
 }

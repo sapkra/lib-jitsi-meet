@@ -31,7 +31,7 @@ export class PerformanceObserverStats {
     startObserver(): void;
     longTaskEventHandler: (list: any) => void;
     observer: PerformanceObserver;
-    longTasksIntervalId: number;
+    longTasksIntervalId: NodeJS.Timeout;
     _lastTimeStamp: number;
     /**
      * Stops the performance observer.

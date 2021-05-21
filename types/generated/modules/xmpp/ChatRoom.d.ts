@@ -181,8 +181,9 @@ export default class ChatRoom extends Listenable {
     /**
      *
      * @param jid
+     * @param reason
      */
-    kick(jid: any): void;
+    kick(jid: any, reason?: string): void;
     /**
      *
      * @param key
@@ -201,10 +202,23 @@ export default class ChatRoom extends Listenable {
     setMembersOnly(enabled: boolean, onSuccess: any, onError: any): void;
     /**
      * Adds the key to the presence map, overriding any previous value.
-     * @param key
-     * @param values
+     * This method is used by jibri.
+     *
+     * @param key The key to add or replace.
+     * @param values The new values.
+     * @returns {boolean|null} <tt>true</tt> if the operation succeeded or <tt>false</tt> when no add or replce was
+     * performed as the value was already there.
+     * @deprecated Use 'addOrReplaceInPresence' instead. TODO: remove it from here and jibri.
      */
-    addToPresence(key: any, values: any): void;
+    addToPresence(key: any, values: any): boolean | null;
+    /**
+     * Adds the key to the presence map, overriding any previous value.
+     * @param key The key to add or replace.
+     * @param values The new values.
+     * @returns {boolean|null} <tt>true</tt> if the operation succeeded or <tt>false</tt> when no add or replace was
+     * performed as the value was already there.
+     */
+    addOrReplaceInPresence(key: any, values: any): boolean | null;
     /**
      * Retrieves a value from the presence map.
      *
@@ -263,7 +277,7 @@ export default class ChatRoom extends Listenable {
      *
      * @param mute
      */
-    addAudioInfoToPresence(mute: any): void;
+    addAudioInfoToPresence(mute: any): boolean;
     /**
      *
      * @param mute
@@ -274,7 +288,7 @@ export default class ChatRoom extends Listenable {
      *
      * @param mute
      */
-    addVideoInfoToPresence(mute: any): void;
+    addVideoInfoToPresence(mute: any): boolean;
     /**
      *
      * @param mute
@@ -328,13 +342,19 @@ export default class ChatRoom extends Listenable {
      * Mutes remote participant.
      * @param jid of the participant
      * @param mute
+     * @param mediaType
      */
-    muteParticipant(jid: any, mute: any): void;
+    muteParticipant(jid: any, mute: any, mediaType: any): void;
     /**
      * TODO: Document
      * @param iq
      */
     onMute(iq: any): void;
+    /**
+     * TODO: Document
+     * @param iq
+     */
+    onMuteVideo(iq: any): void;
     /**
      * Clean any listeners or resources, executed on leaving.
      */

@@ -295,9 +295,10 @@ export function createP2PEvent(action: any, attributes?: {}): {
     source: string;
     attributes: {};
 };
-export function createRemotelyMutedEvent(): {
+export function createRemotelyMutedEvent(mediaType: any): {
     type: string;
     action: string;
+    mediaType: any;
 };
 export function createRtpStatsEvent(attributes: any): {
     type: string;

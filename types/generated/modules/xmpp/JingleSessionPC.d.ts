@@ -293,7 +293,17 @@ export default class JingleSessionPC extends JingleSession {
      * @param {CodecMimeType} preferred the preferred codec.
      * @param {CodecMimeType} disabled the codec that needs to be disabled.
      */
-    setVideoCodecs(preferred?: any, disabled?: any): void;
+    setVideoCodecs(preferred?: {
+        H264: string;
+        OPUS: string;
+        VP8: string;
+        VP9: string;
+    }, disabled?: {
+        H264: string;
+        OPUS: string;
+        VP8: string;
+        VP9: string;
+    }): void;
     /**
      * Although it states "replace transport" it does accept full Jingle offer
      * which should contain new ICE transport details.
@@ -402,6 +412,14 @@ export default class JingleSessionPC extends JingleSession {
      * @param elem An array of Jingle "content" elements.
      */
     removeRemoteStream(elem: any): void;
+    /**
+     * Handles the deletion of the remote tracks and SSRCs associated with a remote endpoint.
+     *
+     * @param {string} id Endpoint id of the participant that has left the call.
+     * @returns {Promise<JitsiRemoteTrack>} Promise that resolves with the tracks that are removed or error if the
+     * operation fails.
+     */
+    removeRemoteStreamsOnLeave(id: string): Promise<any>;
     /**
      * Handles either Jingle 'source-add' or 'source-remove' message for this
      * Jingle session.
@@ -659,5 +677,5 @@ export type JingleSessionPCOptions = {
 import JingleSession from "./JingleSession";
 import SignalingLayerImpl from "./SignalingLayerImpl";
 import AsyncQueue from "../util/AsyncQueue";
-import SDP from "./SDP";
+import SDP from "../sdp/SDP";
 import XmppConnection from "./XmppConnection";

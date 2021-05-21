@@ -311,7 +311,7 @@ declare class ConnectionAvgStats {
      */
     _avgEnd2EndRTT: number;
     _onConnectionStats: (tpc: any, stats: any) => void;
-    _onUserLeft: (id: any) => any;
+    _onUserLeft: (id: any) => boolean;
     _onRemoteStatsUpdated: (id: any, data: any) => void;
     /**
      * Processes next batch of stats.

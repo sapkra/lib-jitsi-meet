@@ -57,7 +57,7 @@ declare class RecordingManager {
      * acknowledgment of the start request success or fail.
      */
     startRecording(options: {
-        appData: string;
+        appData?: string;
     }): Promise<any>;
     /**
      * Stop a recording session.

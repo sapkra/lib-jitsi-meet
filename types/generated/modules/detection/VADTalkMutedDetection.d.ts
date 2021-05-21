@@ -1,7 +1,12 @@
 /**
  * Detect if provided VAD score which is generated on a muted device is voice and fires an event.
  */
-export default class VADTalkMutedDetection {
+export default class VADTalkMutedDetection extends EventEmitter {
+    /**
+     * Creates <tt>VADTalkMutedDetection</tt>
+     * @constructor
+     */
+    constructor();
     /**
      * Flag which denotes the current state of the detection service i.e.if there is already a processing operation
      * ongoing.
@@ -54,7 +59,7 @@ export default class VADTalkMutedDetection {
         score: number;
         deviceId: string;
     }): void;
-    _processTimeout: number;
+    _processTimeout: NodeJS.Timeout;
     /**
      * Reset the processing context, clear buffer, cancel the timeout trigger.
      *
@@ -62,3 +67,4 @@ export default class VADTalkMutedDetection {
      */
     reset(): void;
 }
+import { EventEmitter } from "events";

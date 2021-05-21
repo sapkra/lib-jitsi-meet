@@ -65,7 +65,7 @@ declare class CallStats {
      * Lazily initializes the Set to allow any Set polyfills to be applied.
      * @type {Set<CallStats>}
      */
-    static get fabrics(): any;
+    static get fabrics(): Set<CallStats>;
     /**
      * Initializes the CallStats backend. Should be called only if
      * {@link CallStats.isBackendInitialized} returns <tt>false</tt>.
@@ -119,7 +119,7 @@ declare class CallStats {
      * user feedback
      * @param comment detailed feedback from the user.
      */
-    static sendFeedback(conferenceID: string, overall: any, comment: any): any;
+    static sendFeedback(conferenceID: string, overall: any, comment: any): Promise<any>;
     /**
      * Notifies CallStats that getUserMedia failed.
      *
@@ -148,7 +148,7 @@ declare class CallStats {
      */
     constructor(tpc: any, options: {
         confID: string;
-        remoteUserID: string;
+        remoteUserID?: string;
     });
     confID: string;
     tpc: any;

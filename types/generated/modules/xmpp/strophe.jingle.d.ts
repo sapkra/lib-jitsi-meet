@@ -53,8 +53,9 @@ export default class JingleConnectionPlugin extends JingleConnectionPlugin_base 
      * Parses response when querying for services using urn:xmpp:extdisco:1 or urn:xmpp:extdisco:2.
      * Stores results in jvbIceConfig and p2pIceConfig.
      * @param res The response iq.
+     * @return {boolean} Whether something was processed from the supplied message.
      */
-    onReceiveStunAndTurnCredentials(res: any): void;
+    onReceiveStunAndTurnCredentials(res: any): boolean;
     /**
      * Returns the data saved in 'updateLog' in a format to be logged.
      */

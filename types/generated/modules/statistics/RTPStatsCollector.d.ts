@@ -27,61 +27,33 @@ export default class StatsCollector {
      * @constructor
      */
     constructor(peerconnection: any, audioLevelsInterval: any, statsInterval: any, eventEmitter: any);
-    /**
-     * The browser type supported by this StatsCollector. In other words, the
-     * type of the browser which initialized this StatsCollector
-     * instance.
-     * @private
-     */
-    private _browserType;
-    /**
-     * Whether to use the Promise-based getStats API or not.
-     * @type {boolean}
-     */
-    _usesPromiseGetStats: boolean;
-    /**
-     * The function which is to be used to retrieve the value associated in a
-     * report returned by RTCPeerConnection#getStats with a lib-jitsi-meet
-     * browser-agnostic name/key.
-     *
-     * @function
-     * @private
-     */
-    private _getStatValue;
     peerconnection: any;
     baselineAudioLevelsReport: any;
     currentAudioLevelsReport: any;
     currentStatsReport: any;
     previousStatsReport: any;
     audioLevelReportHistory: {};
-    audioLevelsIntervalId: number;
+    audioLevelsIntervalId: NodeJS.Timeout;
     eventEmitter: any;
     conferenceStats: ConferenceStats;
     audioLevelsIntervalMilis: any;
-    statsIntervalId: number;
+    speakerList: any[];
+    statsIntervalId: NodeJS.Timeout;
     statsIntervalMilis: any;
     /**
      * Maps SSRC numbers to {@link SsrcStats}.
      * @type {Map<number,SsrcStats}
      */
-    ssrc2stats: any;
+    ssrc2stats: Map<number, SsrcStats>;
+    setSpeakerList(speakerList: Array<string>): void;
     stop(): void;
     errorCallback(error: any): void;
     start(startAudioLevelStats: any): void;
-    _defineGetStatValueMethod(keys: {
-        [x: string]: string;
-    }): (item: any, name: any) => any;
-    private getNonNegativeStat;
-    processStatsReport(): void;
     _processAndEmitReport(): void;
-    processAudioLevelReport(): void;
-    _defineNewGetStatValueMethod(keys: {
-        [x: string]: string;
-    }): (item: any, name: any) => any;
     private getNonNegativeValue;
     private _calculateBitrate;
-    processNewStatsReport(): void;
-    processNewAudioLevelReport(): void;
+    processStatsReport(): void;
+    processAudioLevelReport(): void;
 }
 /**
  *
@@ -108,5 +80,26 @@ declare class ConferenceStats {
      * @type {Array}
      */
     transport: any[];
+}
+/**
+ * Holds "statistics" for a single SSRC.
+ * @constructor
+ */
+declare function SsrcStats(): void;
+declare class SsrcStats {
+    loss: {};
+    bitrate: {
+        download: number;
+        upload: number;
+    };
+    resolution: {};
+    framerate: number;
+    codec: string;
+    setLoss(loss: any): void;
+    setResolution(resolution: any): void;
+    addBitrate(bitrate: any): void;
+    resetBitrate(): void;
+    setFramerate(framerate: any): void;
+    setCodec(codec: any): void;
 }
 export {};

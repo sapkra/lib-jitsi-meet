@@ -66,8 +66,8 @@ export default class ParticipantConnectionStatusHandler {
      * {@link ParticipantConnectionStatus.outOfLastNTimeout}.
      */
     constructor(rtc: any, conference: any, options: {
-        rtcMuteTimeout: number;
-        outOfLastNTimeout: number;
+        rtcMuteTimeout?: number;
+        outOfLastNTimeout?: number;
     });
     rtc: any;
     conference: any;
@@ -144,7 +144,7 @@ export default class ParticipantConnectionStatusHandler {
      *
      * @type {Map<string, number>}
      */
-    enteredLastNTimestamp: any;
+    enteredLastNTimestamp: Map<string, number>;
     /**
      * A map of the "endpoint ID"(which corresponds to the resource part
      * of MUC JID(nickname)) to the restoring timeout callback IDs
@@ -152,14 +152,14 @@ export default class ParticipantConnectionStatusHandler {
      *
      * @type {Map<string, number>}
      */
-    restoringTimers: any;
+    restoringTimers: Map<string, number>;
     /**
      * A map that holds the current connection status (along with all the internal events that happen
      * while in that state).
      *
      * The goal is to send this information to the analytics backend for post-mortem analysis.
      */
-    connectionStatusMap: any;
+    connectionStatusMap: Map<any, any>;
     /**
      * Gets the video frozen timeout for given user.
      * @param {string} id endpoint/participant ID

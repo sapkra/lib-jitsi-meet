@@ -152,12 +152,12 @@ export default class TraceablePeerConnection {
      * (one track per media type per user's JID).
      * @type {Map<string, Map<MediaType, JitsiRemoteTrack>>}
      */
-    remoteTracks: any;
+    remoteTracks: Map<string, Map<typeof MediaType, JitsiRemoteTrack>>;
     /**
      * A map which stores local tracks mapped by {@link JitsiLocalTrack.rtcId}
      * @type {Map<number, JitsiLocalTrack>}
      */
-    localTracks: any;
+    localTracks: Map<number, any>;
     /**
      * Keeps tracks of the WebRTC <tt>MediaStream</tt>s that have been added to
      * the underlying WebRTC PeerConnection.
@@ -183,7 +183,7 @@ export default class TraceablePeerConnection {
      * {@link JitsiLocalTrack.rtcId}
      * @type {Map<number, TPCSSRCInfo>}
      */
-    localSSRCs: any;
+    localSSRCs: Map<number, TPCSSRCInfo>;
     /**
      * The local ICE username fragment for this session.
      */
@@ -248,12 +248,15 @@ export default class TraceablePeerConnection {
     private _processStat;
     getConnectionState(): string;
     private _getDesiredMediaDirection;
+    _getReceiversByEndpointIds(endpoints: Array<string>, mediaType: string): Array<RTCRtpReceiver>;
     isSimulcastOn(): boolean;
-    getAudioLevels(): any;
+    getAudioLevels(speakerList?: Array<string>): any;
     getLocalTracks(mediaType?: typeof MediaType): Array<any>;
     getLocalVideoTrack(): any | undefined;
     hasAnyTracksOfType(mediaType: typeof MediaType): boolean;
     getRemoteTracks(endpointId?: string, mediaType?: typeof MediaType): Array<JitsiRemoteTrack>;
+    getRemoteSourceInfoByParticipant(id: string): Array<string>;
+    getTargetVideoBitrates(): any;
     getTrackBySSRC(ssrc: number): any | null;
     getSsrcByTrackId(id: string): number | null;
     _remoteStreamAdded(stream: MediaStream): void;
@@ -261,6 +264,7 @@ export default class TraceablePeerConnection {
     _createRemoteTrack(ownerEndpointId: string, stream: MediaStream, track: MediaStreamTrack, mediaType: typeof MediaType, videoType?: {
         CAMERA: string;
         DESKTOP: string;
+        NONE: string;
     }, ssrc: number, muted: boolean): void;
     _remoteStreamRemoved(stream: any): void;
     _remoteTrackRemoved(stream: MediaStream, track: MediaStreamTrack): void;
@@ -268,9 +272,10 @@ export default class TraceablePeerConnection {
     removeRemoteTracks(owner: string): JitsiRemoteTrack[];
     _removeRemoteTrack(toBeRemoved: JitsiRemoteTrack): void;
     _removeRemoteTrackById(streamId: string, trackId: string): JitsiRemoteTrack | undefined;
-    getLocalSSRC(localTrack: any): any;
+    getLocalSSRC(localTrack: any): number;
     _injectSsrcGroupForUnifiedSimulcast(desc: any): any;
-    _getSSRC(rtcId: any): any;
+    _getSSRC(rtcId: any): TPCSSRCInfo;
+    _isSharingScreen(): boolean;
     _mungeCodecOrder(description: RTCSessionDescription): RTCSessionDescription;
     containsTrack(track: any | JitsiRemoteTrack): boolean;
     addTrack(track: any, isInitiator?: boolean): Promise<void>;
@@ -280,15 +285,18 @@ export default class TraceablePeerConnection {
     private _assertTrackBelongs;
     getConfiguredVideoCodec(): {
         H264: string;
+        OPUS: string;
         VP8: string;
         VP9: string;
     };
     setVideoCodecs(preferredCodec?: {
         H264: string;
+        OPUS: string;
         VP8: string;
         VP9: string;
     }, disabledCodec?: {
         H264: string;
+        OPUS: string;
         VP8: string;
         VP9: string;
     }): void;
@@ -297,6 +305,7 @@ export default class TraceablePeerConnection {
         mediaType: string;
         mimeType: {
             H264: string;
+            OPUS: string;
             VP8: string;
             VP9: string;
         };
@@ -311,49 +320,71 @@ export default class TraceablePeerConnection {
     createDataChannel(label: any, opts: any): RTCDataChannel;
     private _ensureSimulcastGroupIsLast;
     private _adjustLocalMediaDirection;
-    setLocalDescription(description: any): any;
+    _mungeOpus(description: RTCSessionDescription): RTCSessionDescription;
+    setLocalDescription(description: any): Promise<any>;
     public setAudioTransferActive(active: boolean): boolean;
     setSenderVideoDegradationPreference(): Promise<void>;
     setMaxBitRate(): Promise<void>;
-    setRemoteDescription(description: any): any;
+    setRemoteDescription(description: any): Promise<any>;
     setSenderVideoConstraint(frameHeight?: number): Promise<any>;
+    encodingsEnabledState: any;
     public setVideoTransferActive(active: boolean): boolean;
     sendTones(tones: string, duration?: number, interToneGap?: number): void;
     private _onToneChange;
     generateRecvonlySsrc(): void;
     clearRecvonlySsrc(): void;
     close(): void;
-    createAnswer(constraints: any): any;
-    createOffer(constraints: any): any;
-    _createOfferOrAnswer(isOffer: any, constraints: any): any;
+    createAnswer(constraints: any): Promise<any>;
+    createOffer(constraints: any): Promise<any>;
+    _createOfferOrAnswer(isOffer: any, constraints: any): Promise<any>;
     _extractPrimarySSRC(ssrcObj: TrackSSRCInfo): number | null;
     private _processLocalSSRCsMap;
     addIceCandidate(candidate: any): Promise<void>;
-    getStats(callback: Function, errback: Function): void;
-    generateNewStreamSSRCInfo(track: any): {
-        /**
-         * an array which holds all track's SSRCs
-         */
-        ssrcs: Array<number>;
-        /**
-         * an array stores all track's SSRC
-         * groups
-         */
-        groups: {
-            /**
-             * the SSRC groups semantics
-             */
-            semantics: string;
-            /**
-             * group's SSRCs in order where the first
-             * one is group's primary SSRC, the second one is secondary (RTX) and so
-             * on...
-             */
-            ssrcs: Array<number>;
-        }[];
-    };
+    getActiveSimulcastStreams(): number;
+    getStats(): Promise<any>;
+    generateNewStreamSSRCInfo(track: any): TPCSSRCInfo;
     toString(): string;
 }
+export type TouchToneRequest = {
+    /**
+     * - The DTMF tones string as defined by
+     * {@code RTCDTMFSender.insertDTMF}, 'tones' argument.
+     */
+    tones: string;
+    /**
+     * - The amount of time in milliseconds that
+     * each DTMF should last.
+     */
+    duration: number;
+    /**
+     * - The length of time in miliseconds to
+     * wait between tones.
+     */
+    interToneGap: string;
+};
+export type TPCGroupInfo = {
+    /**
+     * the SSRC groups semantics
+     */
+    semantics: string;
+    /**
+     * group's SSRCs in order where the first
+     * one is group's primary SSRC, the second one is secondary (RTX) and so
+     * on...
+     */
+    ssrcs: Array<number>;
+};
+export type TPCSSRCInfo = {
+    /**
+     * an array which holds all track's SSRCs
+     */
+    ssrcs: Array<number>;
+    /**
+     * an array stores all track's SSRC
+     * groups
+     */
+    groups: Array<TPCGroupInfo>;
+};
 export type SSRCGroupInfo = {
     /**
      * group's SSRCs
@@ -372,9 +403,9 @@ export type TrackSSRCInfo = {
     groups: Array<SSRCGroupInfo>;
 };
 import RTC from "./RTC";
-import { TPCUtils } from "./TPCUtils";
-import SdpConsistency from "../xmpp/SdpConsistency";
-import LocalSdpMunger from "./LocalSdpMunger";
-import RtxModifier from "../xmpp/RtxModifier";
 import * as MediaType from "../../service/RTC/MediaType";
 import JitsiRemoteTrack from "./JitsiRemoteTrack";
+import { TPCUtils } from "./TPCUtils";
+import SdpConsistency from "../sdp/SdpConsistency";
+import LocalSdpMunger from "../sdp/LocalSdpMunger";
+import RtxModifier from "../sdp/RtxModifier";

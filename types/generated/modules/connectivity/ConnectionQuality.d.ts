@@ -44,28 +44,21 @@ export default class ConnectionQuality {
      */
     _timeVideoUnmuted: number;
     /**
-     * The time at which a video bitrate cap was last removed.  We use
-     * this to calculate how much time we, as a sender, have had to
-     * ramp-up
-     */
-    _timeLastBwCapRemoved: number;
-    /**
      * Sets _timeVideoUnmuted if it was previously unset. If it was already set,
      * doesn't change it.
      */
     _maybeUpdateUnmuteTime(): void;
     /**
      * Calculates a new "connection quality" value.
-     * @param videoType {VideoType} the type of the video source (camera or
-     * a screen capture).
+     * @param videoType {VideoType} the type of the video source (camera or a screen capture).
      * @param isMuted {boolean} whether the local video is muted.
-     * @param resolutionName {Resolution} the input resolution used by the
-     * camera.
+     * @param resolutionName {Resolution} the input resolution used by the camera.
      * @returns {*} the newly calculated connection quality.
      */
     _calculateConnectionQuality(videoType: {
         CAMERA: string;
         DESKTOP: string;
+        NONE: string;
     }, isMuted: boolean, resolutionName: any): any;
     /**
      * Updates the localConnectionQuality value

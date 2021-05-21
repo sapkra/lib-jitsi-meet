@@ -5,6 +5,10 @@ declare const rtcUtils: RTCUtils;
  */
 declare class RTCUtils extends Listenable {
     /**
+     *
+     */
+    constructor();
+    /**
      * Depending on the browser, sets difference instance methods for
      * interacting with user media and adds methods to native WebRTC-related
      * objects. Also creates an instance variable for peer connection
@@ -14,11 +18,10 @@ declare class RTCUtils extends Listenable {
      * @returns {void}
      */
     init(options?: any): void;
-    enumerateDevices: Function;
     RTCPeerConnectionType: {
         new (configuration?: RTCConfiguration): RTCPeerConnection;
         prototype: RTCPeerConnection;
-        generateCertificate(keygenAlgorithm: string | Algorithm): Promise<RTCCertificate>;
+        generateCertificate(keygenAlgorithm: AlgorithmIdentifier): Promise<RTCCertificate>;
         getDefaultIceServers(): RTCIceServer[];
     };
     attachMediaStream: Function;
@@ -28,165 +31,42 @@ declare class RTCUtils extends Listenable {
     getTrackID: ({ id }: {
         id: any;
     }) => any;
-    /**
-     * Creates instance objects for peer connection constraints both for p2p
-     * and outside of p2p.
-     */
-    _initPCConstraints(): void;
     pcConstraints: {
-        optional?: undefined;
-    } | {
         optional: ({
-            googHighStartBitrate: number;
-            googPayloadPadding?: undefined;
-            googScreencastMinBitrate?: undefined;
-            googCpuOveruseDetection?: undefined;
-            googCpuOveruseEncodeUsage?: undefined;
-            googCpuUnderuseThreshold?: undefined;
-            googCpuOveruseThreshold?: undefined;
-        } | {
-            googPayloadPadding: boolean;
-            googHighStartBitrate?: undefined;
-            googScreencastMinBitrate?: undefined;
-            googCpuOveruseDetection?: undefined;
-            googCpuOveruseEncodeUsage?: undefined;
-            googCpuUnderuseThreshold?: undefined;
-            googCpuOveruseThreshold?: undefined;
-        } | {
             googScreencastMinBitrate: number;
-            googHighStartBitrate?: undefined;
-            googPayloadPadding?: undefined;
             googCpuOveruseDetection?: undefined;
-            googCpuOveruseEncodeUsage?: undefined;
-            googCpuUnderuseThreshold?: undefined;
-            googCpuOveruseThreshold?: undefined;
         } | {
             googCpuOveruseDetection: boolean;
-            googHighStartBitrate?: undefined;
-            googPayloadPadding?: undefined;
             googScreencastMinBitrate?: undefined;
-            googCpuOveruseEncodeUsage?: undefined;
-            googCpuUnderuseThreshold?: undefined;
-            googCpuOveruseThreshold?: undefined;
-        } | {
-            googCpuOveruseEncodeUsage: boolean;
-            googHighStartBitrate?: undefined;
-            googPayloadPadding?: undefined;
-            googScreencastMinBitrate?: undefined;
-            googCpuOveruseDetection?: undefined;
-            googCpuUnderuseThreshold?: undefined;
-            googCpuOveruseThreshold?: undefined;
-        } | {
-            googCpuUnderuseThreshold: number;
-            googHighStartBitrate?: undefined;
-            googPayloadPadding?: undefined;
-            googScreencastMinBitrate?: undefined;
-            googCpuOveruseDetection?: undefined;
-            googCpuOveruseEncodeUsage?: undefined;
-            googCpuOveruseThreshold?: undefined;
-        } | {
-            googCpuOveruseThreshold: number;
-            googHighStartBitrate?: undefined;
-            googPayloadPadding?: undefined;
-            googScreencastMinBitrate?: undefined;
-            googCpuOveruseDetection?: undefined;
-            googCpuOveruseEncodeUsage?: undefined;
-            googCpuUnderuseThreshold?: undefined;
         })[];
+    } | {
+        optional?: undefined;
     };
-    p2pPcConstraints: any;
     /**
-    * @param {string[]} um required user media types
-    * @param {Object} [options] optional parameters
-    * @param {string} options.resolution
-    * @param {number} options.bandwidth
-    * @param {number} options.fps
-    * @param {string} options.desktopStream
-    * @param {string} options.cameraDeviceId
-    * @param {string} options.micDeviceId
-    * @param {Object} options.frameRate - used only for dekstop sharing.
-    * @param {Object} options.frameRate.min - Minimum fps
-    * @param {Object} options.frameRate.max - Maximum fps
-    * @param {bool}   options.screenShareAudio - Used by electron clients to
-    * enable system audio screen sharing.
-    * @returns {Promise} Returns a media stream on success or a JitsiTrackError
-    * on failure.
-    **/
-    getUserMediaWithConstraints(um: string[], options?: {
-        resolution: string;
-        bandwidth: number;
-        fps: number;
-        desktopStream: string;
-        cameraDeviceId: string;
-        micDeviceId: string;
-        frameRate: {
-            min: any;
-            max: any;
-        };
-        screenShareAudio: any;
-    }): Promise<any>;
+     *
+     * @param {Function} callback
+     */
+    enumerateDevices(callback: Function): void;
     /**
      * Acquires a media stream via getUserMedia that
      * matches the given constraints
      *
      * @param {array} umDevices which devices to acquire (e.g. audio, video)
      * @param {Object} constraints - Stream specifications to use.
+     * @param {number} timeout - The timeout in ms for GUM.
      * @returns {Promise}
      */
-    _newGetUserMediaWithConstraints(umDevices: any[], constraints?: any): Promise<any>;
+    _getUserMedia(umDevices: any[], constraints?: any, timeout?: number): Promise<any>;
     /**
      * Acquire a display stream via the screenObtainer. This requires extra
      * logic compared to use screenObtainer versus normal device capture logic
-     * in RTCUtils#_newGetUserMediaWithConstraints.
+     * in RTCUtils#_getUserMedia.
      *
-     * @param {Object} options
-     * @param {string[]} options.desktopSharingSources
-     * @param {Object} options.desktopSharingFrameRate
-     * @param {Object} options.desktopSharingFrameRate.min - Minimum fps
-     * @param {Object} options.desktopSharingFrameRate.max - Maximum fps
      * @returns {Promise} A promise which will be resolved with an object which
      * contains the acquired display stream. If desktop sharing is not supported
      * then a rejected promise will be returned.
      */
-    _newGetDesktopMedia(options: {
-        desktopSharingSources: string[];
-        desktopSharingFrameRate: {
-            min: any;
-            max: any;
-        };
-    }): Promise<any>;
-    /**
-     * Creates the local MediaStreams.
-     * @param {Object} [options] optional parameters
-     * @param {Array} options.devices the devices that will be requested
-     * @param {string} options.resolution resolution constraints
-     * @param {string} options.cameraDeviceId
-     * @param {string} options.micDeviceId
-     * @param {Object} options.desktopSharingFrameRate
-     * @param {Object} options.desktopSharingFrameRate.min - Minimum fps
-     * @param {Object} options.desktopSharingFrameRate.max - Maximum fps
-     * @returns {*} Promise object that will receive the new JitsiTracks
-     */
-    obtainAudioAndVideoPermissions(options?: {
-        devices: any[];
-        resolution: string;
-        cameraDeviceId: string;
-        micDeviceId: string;
-        desktopSharingFrameRate: {
-            min: any;
-            max: any;
-        };
-    }): any;
-    /**
-     * Performs one call to getUserMedia for audio and/or video and another call
-     * for desktop.
-     *
-     * @param {Object} options - An object describing how the gUM request should
-     * be executed. See {@link obtainAudioAndVideoPermissions} for full options.
-     * @returns {*} Promise object that will receive the new JitsiTracks on
-     * success or a JitsiTrackError on failure.
-     */
-    _getAudioAndVideoStreams(options: any): any;
+    _getDesktopMedia(): Promise<any>;
     /**
      * Private utility for determining if the passed in MediaStream contains
      * tracks of the type(s) specified in the requested devices.
@@ -199,14 +79,6 @@ declare class RTCUtils extends Listenable {
      * array will be empty if all requestedDevices are found in the stream.
      */
     _getMissingTracks(requestedDevices: string[], stream: MediaStream): string[];
-    /**
-     * Returns an object formatted for specifying desktop sharing parameters.
-     *
-     * @param {Object} options - Takes in the same options object as
-     * {@link obtainAudioAndVideoPermissions}.
-     * @returns {Object}
-     */
-    _parseDesktopSharingOptions(options: any): any;
     /**
      * Gets streams from specified device types. This function intentionally
      * ignores errors for upstream to catch and handle instead.
@@ -225,7 +97,7 @@ declare class RTCUtils extends Listenable {
      * track. If an error occurs, it will be deferred to the caller for
      * handling.
      */
-    newObtainAudioAndVideoPermissions(options: {
+    obtainAudioAndVideoPermissions(options: {
         devices: string[];
         desktopSharingFrameRate: {
             min: any;
@@ -280,6 +152,11 @@ declare class RTCUtils extends Listenable {
      * @returns {Array} list of available media devices.
      */
     getCurrentlyAvailableMediaDevices(): any[];
+    /**
+     * Returns whether available devices have permissions granted
+     * @returns {Boolean}
+     */
+    arePermissionsGrantedForAvailableDevices(): boolean;
     /**
      * Returns event data for device to be reported to stats.
      * @returns {MediaDeviceInfo} device.

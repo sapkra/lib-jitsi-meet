@@ -12,15 +12,13 @@ export default class BridgeChannel {
      * instance.
      * @param {string} [wsUrl] WebSocket URL.
      * @param {EventEmitter} emitter the EventEmitter instance to use for event emission.
-     * @param {function} senderVideoConstraintsChanged callback to call when the sender video constraints change.
      */
-    constructor(peerconnection?: RTCPeerConnection, wsUrl?: string, emitter: any, senderVideoConstraintsChanged: Function);
+    constructor(peerconnection?: RTCPeerConnection, wsUrl?: string, emitter: any);
     _channel: any;
     _eventEmitter: any;
     _mode: string;
     _areRetriesEnabled: boolean;
     _closedFromClient: boolean;
-    _senderVideoConstraintsChanged: Function;
     _wsUrl: string;
     /**
      * Initializes the web socket channel.
@@ -34,7 +32,7 @@ export default class BridgeChannel {
      * @returns {void}
      */
     _startConnectionRetries(): void;
-    _retryTimeout: number;
+    _retryTimeout: NodeJS.Timeout;
     /**
      * Stops the websocket connection retries.
      *
@@ -64,6 +62,12 @@ export default class BridgeChannel {
      */
     isOpen(): boolean;
     /**
+     * Sends local stats via the bridge channel.
+     * @param {Object} payload The payload of the message.
+     * @throws NetworkError/InvalidStateError/Error if the operation fails or if there is no data channel created.
+     */
+    sendEndpointStatsMessage(payload: any): void;
+    /**
      * Sends message via the channel.
      * @param {string} to The id of the endpoint that should receive the
      * message. If "" the message will be sent to all participants.
@@ -79,14 +83,6 @@ export default class BridgeChannel {
      */
     sendSetLastNMessage(value: number): void;
     /**
-     * Sends a "pinned endpoint changed" message via the channel.
-     * @param {string} endpointId The id of the pinned endpoint.
-     * @throws NetworkError or InvalidStateError from RTCDataChannel#send (@see
-     * {@link https://developer.mozilla.org/docs/Web/API/RTCDataChannel/send})
-     * or from WebSocket#send or Error with "No opened channel" message.
-     */
-    sendPinnedEndpointMessage(endpointId: string): void;
-    /**
      * Sends a "selected endpoints changed" message via the channel.
      *
      * @param {Array<string>} endpointIds - The ids of the selected endpoints.
@@ -101,6 +97,18 @@ export default class BridgeChannel {
      * in pixels, this receiver is willing to receive
      */
     sendReceiverVideoConstraintMessage(maxFrameHeightPixels: number): void;
+    /**
+     * Sends a 'ReceiverVideoConstraints' message via the bridge channel.
+     *
+     * @param {ReceiverVideoConstraints} constraints video constraints.
+     */
+    sendNewReceiverVideoConstraintsMessage(constraints: any): void;
+    /**
+     * Sends a 'VideoTypeMessage' message via the bridge channel.
+     *
+     * @param {string} videoType 'camera', 'desktop' or 'none'.
+     */
+    sendVideoTypeMessage(videoType: string): void;
     /**
      * Set events on the given RTCDataChannel or WebSocket instance.
      */

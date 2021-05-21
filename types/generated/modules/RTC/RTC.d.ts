@@ -9,7 +9,7 @@ export default class RTC extends Listenable {
      * @param {Array<Object>} tracksInfo
      * @returns {Array<JitsiLocalTrack>}
      */
-    static newCreateLocalTracks(tracksInfo: Array<any>): Array<JitsiLocalTrack>;
+    static createLocalTracks(tracksInfo: Array<any>): Array<JitsiLocalTrack>;
     /**
      * Creates the local MediaStreams.
      * @param {object} [options] Optional parameters.
@@ -42,10 +42,6 @@ export default class RTC extends Listenable {
      * @param options
      */
     static init(options?: {}): void;
-    /**
-     *
-     */
-    static getPCConstraints(isP2P: any): any;
     /**
      *
      * @param elSelector
@@ -96,6 +92,11 @@ export default class RTC extends Listenable {
      * @returns {array} list of available media devices.
      */
     static getCurrentlyAvailableMediaDevices(): any[];
+    /**
+     * Returns whether available devices have permissions granted
+     * @returns {Boolean}
+     */
+    static arePermissionsGrantedForAvailableDevices(): boolean;
     /**
      * Returns event data for device to be reported to stats.
      * @returns {MediaDeviceInfo} device.
@@ -163,7 +164,7 @@ export default class RTC extends Listenable {
      * A map of active <tt>TraceablePeerConnection</tt>.
      * @type {Map.<number, TraceablePeerConnection>}
      */
-    peerConnections: any;
+    peerConnections: Map<number, TraceablePeerConnection>;
     localTracks: any[];
     options: {};
     _channel: BridgeChannel;
@@ -183,7 +184,6 @@ export default class RTC extends Listenable {
      * @private
      */
     private _lastNEndpoints;
-    _senderVideoConstraints: {};
     /**
      * The number representing the maximum video height the local client
      * should receive from the bridge.
@@ -192,13 +192,6 @@ export default class RTC extends Listenable {
      * @private
      */
     private _maxFrameHeight;
-    /**
-     * The endpoint ID of currently pinned participant or <tt>null</tt> if
-     * no user is pinned.
-     * @type {string|null}
-     * @private
-     */
-    private _pinnedEndpoint;
     /**
      * The endpoint IDs of currently selected participants.
      *
@@ -225,6 +218,7 @@ export default class RTC extends Listenable {
      * @returns {void}
      */
     private _updateAudioOutputForAudioTracks;
+    _videoType: any;
     /**
      * Removes any listeners and stored state from this {@code RTC} instance.
      *
@@ -242,13 +236,6 @@ export default class RTC extends Listenable {
     initializeBridgeChannel(peerconnection?: RTCPeerConnection, wsUrl?: string): void;
     _channelOpenListener: any;
     /**
-     * Notifies this instance that the sender video constraints signaled from the bridge have changed.
-     *
-     * @param {Object} senderVideoConstraints the sender video constraints from the bridge.
-     * @private
-     */
-    private _senderVideoConstraintsChanged;
-    /**
      * Receives events when Last N had changed.
      * @param {array} lastNEndpoints The new Last N endpoints.
      * @private
@@ -260,6 +247,14 @@ export default class RTC extends Listenable {
      */
     onCallEnded(): void;
     /**
+     * Sets the receiver video constraints that determine how bitrate is allocated to each of the video streams
+     * requested from the bridge. The constraints are cached and sent through the bridge channel once the channel
+     * is established.
+     * @param {*} constraints
+     */
+    setNewReceiverVideoConstraints(constraints: any): void;
+    _receiverVideoConstraints: any;
+    /**
      * Sets the maximum video size the local participant should receive from
      * remote participants. Will cache the value and send it through the channel
      * once it is created.
@@ -269,6 +264,14 @@ export default class RTC extends Listenable {
      * @returns {void}
      */
     setReceiverVideoConstraint(maxFrameHeight: any): void;
+    /**
+     * Sets the video type and availability for the local video source.
+     *
+     * @param {string} videoType 'camera' for camera, 'desktop' for screenshare and
+     * 'none' for when local video source is muted or removed from the peerconnection.
+     * @returns {void}
+     */
+    setVideoType(videoType: string): void;
     /**
      * Elects the participants with the given ids to be the selected
      * participants in order to always receive video for this participant (even
@@ -281,15 +284,6 @@ export default class RTC extends Listenable {
      * @returns {void}
      */
     selectEndpoints(ids: Array<string>): void;
-    /**
-     * Elects the participant with the given id to be the pinned participant in
-     * order to always receive video for this participant (even when last n is
-     * enabled).
-     * @param {stirng} id The user id.
-     * @throws NetworkError or InvalidStateError or Error if the operation
-     * fails.
-     */
-    pinEndpoint(id: any): void;
     /**
      * Creates new <tt>TraceablePeerConnection</tt>
      * @param {SignalingLayer} signaling The signaling layer that will
@@ -335,16 +329,6 @@ export default class RTC extends Listenable {
      */
     addLocalTrack(track: any): void;
     /**
-     * Returns the current value for "lastN" - the amount of videos are going
-     * to be delivered. When set to -1 for unlimited or all available videos.
-     * @return {number}
-     */
-    getLastN(): number;
-    /**
-     * @return {Object} The sender video constraints signaled from the brridge.
-     */
-    getSenderVideoConstraints(): any;
-    /**
      * Get local video track.
      * @returns {JitsiLocalTrack|undefined}
      */
@@ -375,18 +359,16 @@ export default class RTC extends Listenable {
      */
     setAudioMute(value: any): Promise<any>;
     /**
+    * Set mute for all local video streams attached to the conference.
+    * @param value The mute value.
+    * @returns {Promise}
+    */
+    setVideoMute(value: any): Promise<any>;
+    /**
      *
      * @param track
      */
     removeLocalTrack(track: any): void;
-    /**
-     * Removes all JitsiRemoteTracks associated with given MUC nickname
-     * (resource part of the JID). Returns array of removed tracks.
-     *
-     * @param {string} Owner The resource part of the MUC JID.
-     * @returns {JitsiRemoteTrack[]}
-     */
-    removeRemoteTracks(owner: any): any[];
     /**
      * Closes the currently opened bridge channel.
      */
@@ -409,6 +391,12 @@ export default class RTC extends Listenable {
      */
     sendChannelMessage(to: string, payload: object): void;
     /**
+     * Sends the local stats via the bridge channel.
+     * @param {Object} payload The payload of the message.
+     * @throws NetworkError/InvalidStateError/Error if the operation fails or if there is no data channel created.
+     */
+    sendEndpointStatsMessage(payload: any): void;
+    /**
      * Selects a new value for "lastN". The requested amount of videos are going
      * to be delivered after the value is in effect. Set to -1 for unlimited or
      * all available videos.
@@ -424,7 +412,7 @@ export default class RTC extends Listenable {
     isInLastN(id: string): boolean;
 }
 import Listenable from "../util/Listenable";
-import BridgeChannel from "./BridgeChannel";
 import TraceablePeerConnection from "./TraceablePeerConnection";
+import BridgeChannel from "./BridgeChannel";
 import JitsiLocalTrack from "./JitsiLocalTrack";
 import * as MediaType from "../../service/RTC/MediaType";

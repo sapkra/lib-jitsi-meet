@@ -75,8 +75,7 @@ export class TPCUtils {
     /**
     * Adds {@link JitsiLocalTrack} to the WebRTC peerconnection for the first time.
     * @param {JitsiLocalTrack} track - track to be added to the peerconnection.
-    * @param {boolean} isInitiator - boolean that indicates if the endpoint is offerer
-    * in a p2p connection.
+    * @param {boolean} isInitiator - boolean that indicates if the endpoint is offerer in a p2p connection.
     * @returns {void}
     */
     addTrack(localTrack: any, isInitiator: boolean): void;

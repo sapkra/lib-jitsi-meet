@@ -1,3 +1,7 @@
+/**
+ * The default frame rate for Screen Sharing.
+ */
+export const SS_DEFAULT_FRAME_RATE: 5;
 export default ScreenObtainer;
 declare namespace ScreenObtainer {
     const obtainStream: any;
@@ -6,17 +10,15 @@ declare namespace ScreenObtainer {
      * (this.obtainStream).
      *
      * @param {object} options
-     * @param {Function} gum GUM method
      */
-    function init(options: any, gum: Function): void;
+    function init(options?: any): void;
     /**
      * Initializes the function used to obtain a screen capture
      * (this.obtainStream).
      *
      * @param {object} options
-     * @param {Function} gum GUM method
      */
-    function init(options: any, gum: Function): void;
+    function init(options?: any): void;
     /**
      * Returns a method which will be used to obtain the screen sharing stream
      * (based on the browser type).
@@ -34,6 +36,18 @@ declare namespace ScreenObtainer {
      */
     function _createObtainStreamMethod(): Function;
     /**
+     * Gets the appropriate constraints for audio sharing.
+     *
+     * @returns {Object|boolean}
+     */
+    function _getAudioConstraints(): any;
+    /**
+     * Gets the appropriate constraints for audio sharing.
+     *
+     * @returns {Object|boolean}
+     */
+    function _getAudioConstraints(): any;
+    /**
      * Checks whether obtaining a screen capture is supported in the current
      * environment.
      * @returns {boolean}
@@ -48,55 +62,43 @@ declare namespace ScreenObtainer {
     /**
      * Obtains a screen capture stream on Electron.
      *
-     * @param {Object} [options] - Screen sharing options.
-     * @param {Array<string>} [options.desktopSharingSources] - Array with the
-     * sources that have to be displayed in the desktop picker window ('screen',
-     * 'window', etc.).
      * @param onSuccess - Success callback.
      * @param onFailure - Failure callback.
      */
-    function obtainScreenOnElectron(options?: {
-        desktopSharingSources?: string[];
-    }, onSuccess: any, onFailure: any): void;
+    function obtainScreenOnElectron(onSuccess: any, onFailure: any): void;
     /**
      * Obtains a screen capture stream on Electron.
      *
-     * @param {Object} [options] - Screen sharing options.
-     * @param {Array<string>} [options.desktopSharingSources] - Array with the
-     * sources that have to be displayed in the desktop picker window ('screen',
-     * 'window', etc.).
      * @param onSuccess - Success callback.
      * @param onFailure - Failure callback.
      */
-    function obtainScreenOnElectron(options?: {
-        desktopSharingSources?: string[];
-    }, onSuccess: any, onFailure: any): void;
+    function obtainScreenOnElectron(onSuccess: any, onFailure: any): void;
     /**
      * Obtains a screen capture stream using getDisplayMedia.
      *
      * @param callback - The success callback.
      * @param errorCallback - The error callback.
      */
-    function obtainScreenFromGetDisplayMedia(options: any, callback: any, errorCallback: any): void;
+    function obtainScreenFromGetDisplayMedia(callback: any, errorCallback: any): void;
     /**
      * Obtains a screen capture stream using getDisplayMedia.
      *
      * @param callback - The success callback.
      * @param errorCallback - The error callback.
      */
-    function obtainScreenFromGetDisplayMedia(options: any, callback: any, errorCallback: any): void;
+    function obtainScreenFromGetDisplayMedia(callback: any, errorCallback: any): void;
     /**
      * Obtains a screen capture stream using getDisplayMedia.
      *
      * @param callback - The success callback.
      * @param errorCallback - The error callback.
      */
-    function obtainScreenFromGetDisplayMediaRN(options: any, callback: any, errorCallback: any): void;
+    function obtainScreenFromGetDisplayMediaRN(callback: any, errorCallback: any): void;
     /**
      * Obtains a screen capture stream using getDisplayMedia.
      *
      * @param callback - The success callback.
      * @param errorCallback - The error callback.
      */
-    function obtainScreenFromGetDisplayMediaRN(options: any, callback: any, errorCallback: any): void;
+    function obtainScreenFromGetDisplayMediaRN(callback: any, errorCallback: any): void;
 }

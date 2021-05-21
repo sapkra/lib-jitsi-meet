@@ -19,7 +19,7 @@ export class E2EEncryption {
     _enabled: boolean;
     _initialized: boolean;
     _key: any;
-    _signatureKeyPair: CryptoKeyPair;
+    _enabling: Deferred;
     _e2eeCtx: E2EEContext;
     _olmAdapter: OlmAdapter;
     _ratchetKey: any;
@@ -129,5 +129,6 @@ export class E2EEncryption {
      */
     private _trackMuteChanged;
 }
+import Deferred from "../util/Deferred";
 import E2EEContext from "./E2EEContext";
 import { OlmAdapter } from "./OlmAdapter";

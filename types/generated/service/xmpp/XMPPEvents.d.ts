@@ -1,5 +1,6 @@
 export const ADD_ICE_CANDIDATE_FAILED: string;
 export const AUDIO_MUTED_BY_FOCUS: string;
+export const VIDEO_MUTED_BY_FOCUS: string;
 export const AUTHENTICATION_REQUIRED: string;
 export const BRIDGE_DOWN: string;
 export const CALL_ACCEPTED: string;

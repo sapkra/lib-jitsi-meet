@@ -13,7 +13,7 @@ export default class NoAudioSignalDetection {
      */
     constructor(conference: any);
     _conference: any;
-    _timeoutTrigger: number;
+    _timeoutTrigger: NodeJS.Timeout;
     _hasAudioInput: boolean;
     /**
      * Clear the timeout state.

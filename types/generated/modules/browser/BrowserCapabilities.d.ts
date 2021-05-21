@@ -11,12 +11,6 @@ export default class BrowserCapabilities {
      */
     doesVideoMuteByStreamRemove(): boolean;
     /**
-     * Check whether or not the current browser support peer to peer connections
-     * @return {boolean} <tt>true</tt> if p2p is supported or <tt>false</tt>
-     * otherwise.
-     */
-    supportsP2P(): boolean;
-    /**
      * Checks if the current browser is Chromium based, that is, it's either
      * Chrome / Chromium or uses it as its engine, but doesn't identify as
      * Chrome.
@@ -29,6 +23,15 @@ export default class BrowserCapabilities {
      *   custom detection code: Opera, Electron and NW.JS
      */
     isChromiumBased(): any;
+    /**
+     * Checks if the current browser is WebKit based. It's either
+     * Safari or uses WebKit as its engine.
+     *
+     * This includes Chrome and Firefox on iOS
+     *
+     * @returns {boolean}
+     */
+    isWebKitBased(): boolean;
     /**
      * Checks whether current running context is a Trusted Web Application.
      *
@@ -111,17 +114,7 @@ export default class BrowserCapabilities {
      */
     usesUnifiedPlan(): boolean;
     /**
-     * Returns whether or not the current browser should be using the new
-     * getUserMedia flow, which utilizes the adapter shim. This method should
-     * be temporary and used while migrating all browsers to use adapter and
-     * the new getUserMedia.
-     *
-     * @returns {boolean}
-     */
-    usesNewGumFlow(): boolean;
-    /**
-     * Checks if the browser uses webrtc-adapter. All browsers using the new
-     * getUserMedia flow.
+     * Checks if the browser uses webrtc-adapter. All browsers except React Native do.
      *
      * @returns {boolean}
      */

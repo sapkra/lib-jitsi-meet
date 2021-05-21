@@ -3,6 +3,7 @@
  */
 export default class LastRequestTracker {
     _lastSuccess: number;
+    _lastFailedMessage: any;
     /**
      * Starts tracking requests on the given connection.
      *
@@ -10,6 +11,12 @@ export default class LastRequestTracker {
      * @param {Object} stropheConnection - Strophe connection instance.
      */
     startTracking(xmppConnection: any, stropheConnection: any): void;
+    /**
+     * Returns the last raw failed incoming message on the xmpp connection.
+     *
+     * @returns {string|null}
+     */
+    getLastFailedMessage(): string | null;
     /**
      * Returns how many milliseconds have passed since the last successful BOSH request.
      *

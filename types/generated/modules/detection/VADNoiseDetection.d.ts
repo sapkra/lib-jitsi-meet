@@ -1,7 +1,13 @@
 /**
  * Detect if provided VAD score and PCM data is considered noise.
  */
-export default class VADNoiseDetection {
+export default class VADNoiseDetection extends EventEmitter {
+    /**
+     * Creates <tt>VADNoiseDetection</tt>
+     *
+     * @constructor
+     */
+    constructor();
     /**
      * Flag which denotes the current state of the detection service i.e.if there is already a processing operation
      * ongoing.
@@ -74,5 +80,6 @@ export default class VADNoiseDetection {
         pcmData: Float32Array;
         deviceId: string;
     }): void;
-    _processTimeout: number;
+    _processTimeout: NodeJS.Timeout;
 }
+import { EventEmitter } from "events";

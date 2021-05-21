@@ -52,5 +52,10 @@ export default class MucConnectionPlugin extends MucConnectionPlugin_base {
      * @param iq
      */
     onMute(iq: any): boolean;
+    /**
+     * TODO: Document
+     * @param iq
+     */
+    onMuteVideo(iq: any): boolean;
 }
 export {};

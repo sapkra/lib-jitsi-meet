@@ -121,10 +121,10 @@ export default class JingleSession extends Listenable {
      * connection has been closed already or if the remote peer has disconnected
      */
     terminate(success: any, failure: any, options: {
-        reason: string;
-        reasonDescription: string;
-        requestRestart: boolean;
-        sendSessionTerminate: boolean;
+        reason?: string;
+        reasonDescription?: string;
+        requestRestart?: boolean;
+        sendSessionTerminate?: boolean;
     }): void;
     /**
      * Handles an offer from the remote peer (prepares to accept a session).

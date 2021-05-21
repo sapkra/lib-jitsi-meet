@@ -45,6 +45,11 @@ export default class XMPP extends Listenable {
     constructor(options: {
         serviceUrl: string;
         bosh: string;
+        enableWebsocketResume: boolean;
+        websocketKeepAlive?: number;
+        websocketKeepAliveUrl?: number;
+        xmppPing?: any;
+        p2pStunServers: Array<any>;
     }, token: any);
     connection: XmppConnection;
     disconnectInProgress: boolean;
@@ -52,6 +57,11 @@ export default class XMPP extends Listenable {
     options: {
         serviceUrl: string;
         bosh: string;
+        enableWebsocketResume: boolean;
+        websocketKeepAlive?: number;
+        websocketKeepAliveUrl?: number;
+        xmppPing?: any;
+        p2pStunServers: Array<any>;
     };
     token: any;
     authenticatedUser: boolean;
@@ -78,19 +88,44 @@ export default class XMPP extends Listenable {
      */
     connectionHandler(credentials: {
         jid: string;
+        password: string;
     }, status: string, msg?: string): void;
-    speakerStatsComponentAddress: any;
-    conferenceDurationComponentAddress: any;
-    lobbySupported: boolean;
+    _sysMessageHandler: any;
+    sendDiscoInfo: boolean;
     anonymousConnectionFailed: boolean;
     connectionFailed: boolean;
     lastErrorMsg: string;
+    /**
+     * Process received identities.
+     * @param {Set<String>} identities The identities to process.
+     * @param {Set<String>} features The features to process, optional. If missing lobby component will be queried
+     * for more features.
+     * @private
+     */
+    private _processDiscoInfoIdentities;
+    speakerStatsComponentAddress: any;
+    conferenceDurationComponentAddress: any;
+    lobbySupported: boolean;
+    /**
+    * Parses a raw failure xmpp xml message received on auth failed.
+    *
+    * @param {string} msg - The raw failure message from xmpp.
+    * @returns {string|null} - The parsed message from the raw xmpp message.
+    */
+    _parseConnectionFailedMessage(msg: string): string | null;
     /**
      *
      * @param jid
      * @param password
      */
     _connect(jid: any, password: any): void;
+    /**
+     * Receives system messages during the connect/login process and checks for services or
+     * @param msg The received message.
+     * @returns {void}
+     * @private
+     */
+    private _onSystemMessage;
     /**
      * Attach to existing connection. Can be used for optimizations. For
      * example: if the connection is created on the server we can attach to it

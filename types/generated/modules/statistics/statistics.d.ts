@@ -46,7 +46,7 @@ declare class Statistics {
      * collect RTP statistics for each peerconnection.
      * @type {Map<string, RTPStats}
      */
-    rtpStatsMap: any;
+    rtpStatsMap: Map<string, RTPStats>;
     eventEmitter: any;
     xmpp: any;
     options: {};
@@ -58,7 +58,7 @@ declare class Statistics {
      * one TPC). The instances are mapped by {@link TraceablePeerConnection.id}.
      * @type {Map<number, CallStats>}
      */
-    callsStatsInstances: any;
+    callsStatsInstances: Map<number, CallStats>;
     startRemoteStats(peerconnection: any): void;
     addAudioLevelListener(listener: any): void;
     removeAudioLevelListener(listener: any): void;
@@ -73,6 +73,7 @@ declare class Statistics {
     performanceObserverStats: PerformanceObserverStats;
     getLongTasksStats(): any | null;
     removeLongTasksStatsListener(listener: Function): void;
+    setSpeakerList(speakerList: Array<string>): void;
     dispose(): void;
     private _stopRemoteStats;
     stopRemoteStats(tpc: any): void;
@@ -103,7 +104,7 @@ declare namespace Statistics {
     export const localStats: any[];
     export function startLocalStats(stream: any, callback: any): void;
     export function stopLocalStats(stream: any): void;
-    export function _getAllCallStatsInstances(): any;
+    export function _getAllCallStatsInstances(): Set<CallStats>;
     export function sendActiveDeviceListEvent(devicesData: {
         deviceList: {
             String: string;
@@ -156,5 +157,7 @@ export type StatisticsOptions = {
      */
     roomName: string;
 };
+import RTPStats from "./RTPStatsCollector";
+import CallStats from "./CallStats";
 import { PerformanceObserverStats } from "./PerformanceObserverStats";
 import analytics from "./AnalyticsAdapter";

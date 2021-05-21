@@ -5,17 +5,24 @@ export default _default;
  */
 declare class JitsiMediaDevices {
     _eventEmitter: any;
-    _grantedPermissions: {};
-    _permissionsApiSupported: any;
+    _permissions: {};
+    _permissionsApiSupported: Promise<any>;
     /**
-     * Updated the local granted permissions cache. A permissions might be
+     * Parses a PermissionState object and returns true for granted and false otherwise.
+     *
+     * @param {PermissionState} permissionStatus - The PermissionState object retrieved from the Permissions API.
+     * @returns {boolean} - True for granted and false for denied.
+     * @throws {TypeError}
+     */
+    _parsePermissionState(permissionStatus?: PermissionState): boolean;
+    /**
+     * Updates the local granted/denied permissions cache. A permissions might be
      * granted, denied, or undefined. This is represented by having its media
      * type key set to {@code true} or {@code false} respectively.
      *
-     * @param {Object} grantedPermissions - Array with the permissions
-     * which were granted.
+     * @param {Object} permissions - Object with the permissions.
      */
-    _handleGrantedPermissions(grantedPermissions: any): void;
+    _handlePermissionsChange(permissions: any): void;
     /**
      * Gathers data and sends it to statistics.
      * @param deviceID the device id to log

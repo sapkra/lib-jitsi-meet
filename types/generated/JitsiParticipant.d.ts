@@ -29,7 +29,7 @@ export default class JitsiParticipant {
     _connectionStatus: string;
     _properties: {};
     _identity: any;
-    _features: any;
+    _features: Set<any>;
     /**
      * @returns {JitsiConference} The conference that this participant belongs
      * to.
@@ -136,6 +136,11 @@ export default class JitsiParticipant {
      */
     getRole(): string;
     /**
+     * Sets a new participant role.
+     * @param {String} newRole - the new role.
+     */
+    setRole(newRole: string): void;
+    /**
      *
      */
     supportsDTMF(): boolean;
@@ -143,19 +148,30 @@ export default class JitsiParticipant {
      * Returns a set with the features for the participant.
      * @returns {Promise<Set<String>, Error>}
      */
-    getFeatures(): Promise<any, Error>;
+    getFeatures(): Promise<Set<string>, Error>;
     /**
-     * Returns a set with the features for the participant.
-     * @param {int} timeout the timeout in ms for reply from the participant.
-     * @returns {Promise<Set<String>, Error>}
+     * Checks current set features.
+     * @param {String} feature - the feature to check.
+     * @return {boolean} <tt>true</tt> if this <tt>participant</tt> contains the
+     * <tt>feature</tt>.
      */
-    queryFeatures(timeout?: any): Promise<any, Error>;
-    _getFeaturesPromise: any;
+    hasFeature(feature: string): boolean;
+    /**
+     * Set new features.
+     * @param {Set<String>|undefined} newFeatures - Sets new features.
+     */
+    setFeatures(newFeatures: Set<string> | undefined): void;
     /**
      * Returns the bot type for the participant.
      *
      * @returns {string|undefined} - The bot type of the participant.
      */
     getBotType(): string | undefined;
+    /**
+     * Sets the bot type for the participant.
+     * @param {String} newBotType - The new bot type to set.
+     */
+    setBotType(newBotType: string): void;
+    _botType: string;
 }
 import * as MediaType from "./service/RTC/MediaType";

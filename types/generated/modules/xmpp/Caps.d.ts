@@ -1,4 +1,12 @@
-export const ERROR_FEATURE_VERSION_MISMATCH: "Feature version mismatch";
+/**
+ * Parses the disco-info node and returns the sets of features and identities.
+ * @param {String} node The node with results to parse.
+ * @returns {{features: Set<any>, identities: Set<any>}}
+ */
+export function parseDiscoInfo(node: string): {
+    features: Set<any>;
+    identities: Set<any>;
+};
 /**
  * Implements xep-0115 ( http://xmpp.org/extensions/xep-0115.html )
  */
@@ -12,12 +20,9 @@ export default class Caps extends Listenable {
     constructor(connection?: any, node?: string);
     node: string;
     disco: any;
-    versionToCapabilities: any;
-    jidToVersion: any;
     version: string;
-    rooms: any;
-    externalFeatures: any;
-    _onMucMemberLeft: any;
+    rooms: Set<any>;
+    externalFeatures: Set<any>;
     /**
      * Adds new feature to the list of supported features for the local
      * participant
@@ -49,19 +54,12 @@ export default class Caps extends Listenable {
      */
     private _updateRoomWithExternalFeatures;
     /**
-     * Returns a set with the features for a participant.
-     * @param {String} jid the jid of the participant
-     * @param {int} timeout the timeout in ms for reply from the participant.
-     * @returns {Promise<Set<String>, Error>}
-     */
-    getFeatures(jid: string, timeout?: any): Promise<any, Error>;
-    /**
      * Returns a set with the features for a host.
      * @param {String} jid the jid of the host
      * @param {int} timeout the timeout in ms for reply from the host.
      * @returns {Promise<Set<String>, Error>}
      */
-    getFeaturesAndIdentities(jid: string, node: any, timeout?: any): Promise<any, Error>;
+    getFeaturesAndIdentities(jid: string, node: any, timeout?: any): Promise<Set<string>, Error>;
     /**
      * Returns a set with the features and identities for a host.
      * @param {String} jid the jid of the host
@@ -96,15 +94,5 @@ export default class Caps extends Listenable {
      * Generates the value for the "ver" attribute.
      */
     _generateVersion(): void;
-    /**
-     * Parses the "c" xml node from presence.
-     * @param {DOMElement} stanza the presence packet
-     */
-    _handleCaps(stanza: any): boolean;
-    /**
-     * Removes entry from this.jidToVersion map.
-     * @param {String} jid the jid to be removed.
-     */
-    _removeJidToVersionEntry(jid: string): void;
 }
 import Listenable from "../util/Listenable";

@@ -3,4 +3,4 @@
  *
  * @returns Promise<Object> - Object containing information about the found device.
  */
-export default function getActiveAudioDevice(): any;
+export default function getActiveAudioDevice(): Promise<any>;

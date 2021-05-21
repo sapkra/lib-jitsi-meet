@@ -12,7 +12,6 @@
  * @interface SignalingLayer
  */
 export default class SignalingLayer extends Listenable {
-    constructor(eventEmitter?: any);
     /**
      * Obtains the endpoint ID for given SSRC.
      * @param {number} ssrc the SSRC number.

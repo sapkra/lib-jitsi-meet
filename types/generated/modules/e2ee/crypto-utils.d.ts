@@ -7,8 +7,6 @@
 export function deriveKeys(material: CryptoKey): Promise<{
     material: CryptoKey;
     encryptionKey: CryptoKey;
-    authenticationKey: CryptoKey;
-    saltKey: ArrayBuffer;
 }>;
 /**
  * Ratchets a key. See

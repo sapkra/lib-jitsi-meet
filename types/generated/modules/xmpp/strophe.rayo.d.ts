@@ -8,7 +8,6 @@ declare const RayoConnectionPlugin_base: {
  *
  */
 export default class RayoConnectionPlugin extends RayoConnectionPlugin_base {
-    constructor(...args: any[]);
     /**
      *
      * @param iq
@@ -22,11 +21,11 @@ export default class RayoConnectionPlugin extends RayoConnectionPlugin_base {
      * @param roomPass
      * @param focusMucJid
      */
-    dial(to: any, from: any, roomName: any, roomPass: any, focusMucJid: any): any;
+    dial(to: any, from: any, roomName: any, roomPass: any, focusMucJid: any): Promise<any>;
     callResource: any;
     /**
      *
      */
-    hangup(): any;
+    hangup(): Promise<any>;
 }
 export {};

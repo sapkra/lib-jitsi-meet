@@ -36,7 +36,7 @@ export default class ResumeTask {
      * @returns {void}
      */
     private _scheduleResume;
-    _resumeTimeout: number;
+    _resumeTimeout: NodeJS.Timeout;
     /**
      * Cancels the delayed resume task.
      *

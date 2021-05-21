@@ -23,8 +23,11 @@ export default class ProxyConnectionService {
      * jid to send the message to and the message
      */
     constructor(options?: {
-        convertVideoToDesktop: boolean;
-        iceConfig: any;
+        convertVideoToDesktop?: boolean;
+        iceConfig?: any;
+        jitsiConnection?: any;
+        onRemoteStream: Function;
+        onSendMessage: Function;
     });
     /**
      * Holds a reference to the collection of all callbacks.

@@ -49,6 +49,9 @@
  */
 export default function authenticateAndUpgradeRole({ id, password, onCreateResource, onLoginSuccessful, roomPassword }: {
     id: string;
+    password: string;
+    roomPassword?: string;
+    onLoginSuccessful?: Function;
 }): any;
 export type UpgradeRoleError = {
     /**
@@ -72,7 +75,7 @@ export type UpgradeRoleError = {
      * authentication.
      */
     credentials?: {
-        jid: string;
-        password: string;
+        jid?: string;
+        password?: string;
     };
 };

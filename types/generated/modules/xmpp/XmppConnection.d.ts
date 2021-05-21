@@ -33,10 +33,10 @@ export default class XmppConnection extends Listenable {
     constructor({ enableWebsocketResume, websocketKeepAlive, websocketKeepAliveUrl, serviceUrl, shard, xmppPing }: {
         serviceUrl: string;
         shard: string;
-        enableWebsocketResume: string;
-        websocketKeepAlive: number;
-        websocketKeepAliveUrl: number;
-        xmppPing: any;
+        enableWebsocketResume?: string;
+        websocketKeepAlive?: number;
+        websocketKeepAliveUrl?: number;
+        xmppPing?: any;
     });
     _options: {
         enableWebsocketResume: string | boolean;
@@ -46,8 +46,8 @@ export default class XmppConnection extends Listenable {
         websocketKeepAliveUrl: number;
     };
     _stropheConn: any;
-    _usesWebsocket: any;
-    _lastSuccessTracker: LastSuccessTracker;
+    _usesWebsocket: boolean;
+    _rawInputTracker: LastSuccessTracker;
     _resumeTask: ResumeTask;
     /**
      * @typedef DeferredSendIQ Object
@@ -203,6 +203,12 @@ export default class XmppConnection extends Listenable {
      */
     getTimeSinceLastSuccess(): number | null;
     /**
+     * See {@link LastRequestTracker.getLastFailedMessage}.
+     *
+     * @returns {string|null}
+     */
+    getLastFailedMessage(): string | null;
+    /**
      * Requests a resume token from the server if enabled and all requirements are met.
      *
      * @private
@@ -215,7 +221,7 @@ export default class XmppConnection extends Listenable {
      * @returns {void}
      */
     private _maybeStartWSKeepAlive;
-    _wsKeepAlive: number;
+    _wsKeepAlive: NodeJS.Timeout;
     /**
      * Do a http GET to the shard and if shard change will throw an event.
      *
@@ -256,7 +262,7 @@ export default class XmppConnection extends Listenable {
      * @param {number} timeout - How long to wait for the response. The time when the connection is reconnecting is
      * included, which means that the IQ may never be sent and still fail with a timeout.
      */
-    sendIQ2(iq: Element, { timeout }: number): any;
+    sendIQ2(iq: Element, { timeout }: number): Promise<any>;
     /**
      * Called by the ping plugin when ping fails too many times.
      *
@@ -291,6 +297,27 @@ export default class XmppConnection extends Listenable {
      */
     private _tryResumingConnection;
 }
+/**
+ * Object
+ */
+export type DeferredSendIQ = {
+    /**
+     * - The IQ to send.
+     */
+    iq: Element;
+    /**
+     * - The resolve method of the deferred Promise.
+     */
+    resolve: Function;
+    /**
+     * - The reject method of the deferred Promise.
+     */
+    reject: Function;
+    /**
+     * - The ID of the timeout task that needs to be cleared, before sending the IQ.
+     */
+    timeout: number;
+};
 import Listenable from "../util/Listenable";
 import LastSuccessTracker from "./StropheLastSuccess";
 import ResumeTask from "./ResumeTask";

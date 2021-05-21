@@ -70,7 +70,7 @@
     "test-watch": "karma start karma.conf.js --no-single-run",
     "validate": "npm ls",
     "watch": "webpack --config webpack.config.js --watch --mode development",
-    "types": "npx typescript JitsiMeetJS.js --declaration --allowJs --emitDeclarationOnly --outDir types/generated"
+    "types": "npx tsc JitsiMeetJS.js --declaration --allowJs --emitDeclarationOnly --outDir types/generated"
   },
   "main": "./index.js",
   "license": "Apache-2.0"

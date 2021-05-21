@@ -4,6 +4,10 @@
  */
 export default class SignalingLayerImpl extends SignalingLayer {
     /**
+     * Creates new instance.
+     */
+    constructor();
+    /**
      * A map that stores SSRCs of remote streams. And is used only locally
      * We store the mapping when jingle is received, and later is used
      * onaddstream webrtc event where we have only the ssrc
@@ -11,7 +15,7 @@ export default class SignalingLayerImpl extends SignalingLayer {
      * conference
      * @type {Map<number, string>} maps SSRC number to jid
      */
-    ssrcOwners: any;
+    ssrcOwners: Map<number, string>;
     /**
      *
      * @type {ChatRoom|null}

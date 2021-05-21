@@ -60,7 +60,7 @@ declare class AnalyticsAdapter {
      * The set of handlers to which events will be sent.
      * @type {Set<any>}
      */
-    analyticsHandlers: any;
+    analyticsHandlers: Set<any>;
     /**
      * The cache of events which are not sent yet. The cache is enabled
      * while this field is truthy, and disabled otherwise.

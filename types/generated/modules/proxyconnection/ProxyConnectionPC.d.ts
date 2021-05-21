@@ -26,13 +26,21 @@ export default class ProxyConnectionPC {
      * message has to be sent (signaled) out.
      */
     constructor(options?: {
-        iceConfig: any;
+        iceConfig?: any;
+        isInitiator?: boolean;
+        onRemoteStream: Function;
+        peerJid: string;
+        receiveVideo?: boolean;
+        onSendMessage: Function;
     });
     _options: {
         iceConfig: any;
         isInitiator: boolean;
-        receiveAudio: boolean;
+        onRemoteStream: Function;
+        peerJid: string;
         receiveVideo: boolean;
+        onSendMessage: Function;
+        receiveAudio: boolean;
     };
     /**
      * Instances of {@code JitsiTrack} associated with this instance of

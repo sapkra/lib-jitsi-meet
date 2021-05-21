@@ -2,7 +2,7 @@
  * Connects a TrackVADEmitter to the target conference local audio track and manages various services that use
  * the data to produce audio analytics (VADTalkMutedDetection and VADNoiseDetection).
  */
-export default class VADAudioAnalyser {
+export default class VADAudioAnalyser extends EventEmitter {
     /**
      * Creates <tt>VADAudioAnalyser</tt>
      * @param {JitsiConference} conference - JitsiConference instance that created us.
@@ -22,7 +22,7 @@ export default class VADAudioAnalyser {
      * Current {@link TrackVADEmitter}. VAD Emitter uses a {@link JitsiLocalTrack} and VAD processor to generate
      * period voice probability scores.
      */
-    _vadEmitter: any;
+    _vadEmitter: TrackVADEmitter;
     /**
      * Current state of the _vadEmitter
      */
@@ -38,7 +38,7 @@ export default class VADAudioAnalyser {
      * we destroy it ( when changing the device for instance), or when we use it from an external point of entry
      * i.e. (TRACK_MUTE_CHANGED event callback).
      */
-    _vadInitTracker: any;
+    _vadInitTracker: Promise<void>;
     /**
      * Listens for {@link TrackVADEmitter} events and directs them to attached services as needed.
      *
@@ -101,3 +101,5 @@ export default class VADAudioAnalyser {
      */
     _trackRemoved(track: any): void;
 }
+import { EventEmitter } from "events";
+import TrackVADEmitter from "./TrackVADEmitter";

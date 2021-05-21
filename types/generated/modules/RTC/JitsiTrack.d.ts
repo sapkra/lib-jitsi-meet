@@ -28,7 +28,7 @@ export default class JitsiTrack {
     type: any;
     track: any;
     videoType: any;
-    handlers: any;
+    handlers: Map<any, any>;
     /**
      * Indicates whether this JitsiTrack has been disposed. If true, this
      * JitsiTrack is to be considered unusable and operations involving it

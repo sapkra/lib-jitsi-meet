@@ -7,6 +7,10 @@ export const NETWORK_INFO_EVENT: "NETWORK_INFO_CHANGED";
  * it was connected. See {@link JitsiMeetJS.setNetworkInfo}.
  */
 export class NetworkInfo extends Listenable {
+    /**
+     * Creates new {@link NetworkInfo} instance.
+     */
+    constructor();
     _current: {
         isOnline: boolean;
     };

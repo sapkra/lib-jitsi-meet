@@ -6,7 +6,7 @@
  * In addition a "reject on timeout" functionality is provided.
  */
 export default class Deferred {
-    promise: any;
+    promise: Promise<any>;
     resolve: (...args: any[]) => void;
     reject: (...args: any[]) => void;
     then: any;
@@ -19,5 +19,5 @@ export default class Deferred {
      * Rejects the promise after the given timeout.
      */
     setRejectTimeout(ms: any): void;
-    _timeout: number;
+    _timeout: NodeJS.Timeout;
 }

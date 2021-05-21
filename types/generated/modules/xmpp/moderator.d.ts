@@ -37,7 +37,7 @@ export default class Moderator {
     allocateConferenceFocus(): Promise<any>;
     _allocateConferenceFocusError(error: any, callback: Function): void;
     _allocateConferenceFocusSuccess(result: any, callback: Function): void;
-    authenticate(): any;
+    authenticate(): Promise<any>;
     getLoginUrl(urlCallback: any, failureCallback: any): void;
     _getLoginUrl(popup: boolean, urlCb: any, failureCb: any): void;
     getPopupLoginUrl(urlCallback: any, failureCallback: any): void;

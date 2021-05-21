@@ -109,11 +109,11 @@ export default class JibriSession {
      * @returns Promise
      */
     start({ appData, broadcastId, focusMucJid, streamId }: {
-        appData: string;
-        broadcastId: string;
+        appData?: string;
+        broadcastId?: string;
         focusMucJid: string;
         streamId: any;
-    }): any;
+    }): Promise<any>;
     /**
      * Sends a message to actually stop the recording session.
      *
@@ -125,7 +125,7 @@ export default class JibriSession {
      */
     stop({ focusMucJid }: {
         focusMucJid: any;
-    }): any;
+    }): Promise<any>;
     /**
      * Generates the message to change the status of the recording session.
      *
