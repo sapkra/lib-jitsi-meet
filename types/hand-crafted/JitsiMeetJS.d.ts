@@ -76,9 +76,9 @@ export type JitsiMeetJSType = {
   };
 
   errors: {
-    conference: JitsiConferenceErrors,
-    connection: JitsiConnectionErrors,
-    track: JitsiTrackErrors
+    conference: typeof JitsiConferenceErrors,
+    connection: typeof JitsiConnectionErrors,
+    track: typeof JitsiTrackErrors
   };
 
   errorTypes: {
