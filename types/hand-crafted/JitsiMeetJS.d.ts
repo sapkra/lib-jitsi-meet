@@ -66,13 +66,13 @@ export type JitsiMeetJSType = {
   };
 
   events: {
-    conference: JitsiConferenceEvents,
-    connection: JitsiConnectionEvents,
-    detection: DetectionEvents,
-    track: JitsiTrackEvents,
-    mediaDevices: JitsiMediaDevicesEvents,
-    connectionQuality: ConnectionQualityEvents,
-    e2eping: E2ePingEvents
+    conference: typeof JitsiConferenceEvents,
+    connection: typeof JitsiConnectionEvents,
+    detection: typeof DetectionEvents,
+    track: typeof JitsiTrackEvents,
+    mediaDevices: typeof JitsiMediaDevicesEvents,
+    connectionQuality: typeof ConnectionQualityEvents,
+    e2eping: typeof E2ePingEvents
   };
 
   errors: {
