@@ -139,3 +139,6 @@ export type JitsiMeetJSType = {
     browser: BrowserCapabilities
   }
 }
+
+declare var _default: JitsiMeetJSType;
+export default _default;
