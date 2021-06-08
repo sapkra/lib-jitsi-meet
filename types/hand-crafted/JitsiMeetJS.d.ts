@@ -59,10 +59,10 @@ export type JitsiMeetJSType = {
   //USER_MEDIA_SLOW_PROMISE_TIMEOUT: 1000;
 
   constants: {
-    participantConnectionStatus: ParticipantConnectionStatus,
+    participantConnectionStatus: typeof ParticipantConnectionStatus,
     recording: typeof RecordingConstants,
-    sipVideoGW: VideoSIPGWConstants,
-    transcriptionStatus: JitsiTranscriptionStatus,
+    sipVideoGW: typeof VideoSIPGWConstants,
+    transcriptionStatus: typeof JitsiTranscriptionStatus,
   };
 
   events: {
