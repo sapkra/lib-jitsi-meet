@@ -1,4 +1,4 @@
-export const enum CameraFacingMode {
+export enum CameraFacingMode {
   ENVIRONMENT = 'environment',
   USER = 'user'
 }

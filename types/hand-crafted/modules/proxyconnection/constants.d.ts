@@ -1,4 +1,4 @@
-export const enum ACTIONS {
+export enum ACTIONS {
   ACCEPT = 'session-accept',
   CONNECTION_ERROR = 'connection-error-encountered',
   INITIATE = 'session-initiate',

@@ -4,7 +4,7 @@ import JitsiRemoteTrack from '../RTC/JitsiRemoteTrack';
 import JitsiParticipant from '../../JitsiParticipant';
 import { VideoType } from '../../service/RTC/VideoType';
 
-export const enum ParticipantConnectionStatus {
+export enum ParticipantConnectionStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
   INTERRUPTED = 'interrupted',

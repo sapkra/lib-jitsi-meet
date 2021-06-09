@@ -1,4 +1,4 @@
-export const enum VideoSIPGWConstants {
+export enum VideoSIPGWConstants {
   STATUS_AVAILABLE = 'available',
   STATUS_UNDEFINED = 'undefined',
   STATUS_BUSY = 'busy',

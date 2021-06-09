@@ -1,4 +1,4 @@
-export const enum VideoType {
+export enum VideoType {
   CAMERA = 'camera',
   DESKTOP = 'desktop',
   NONE = 'none'

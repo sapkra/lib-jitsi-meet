@@ -1,4 +1,4 @@
-export const enum DetectionEvents {
+export enum DetectionEvents {
   DETECTOR_STATE_CHANGE = 'detector_state_change',
   AUDIO_INPUT_STATE_CHANGE = 'audio_input_state_changed',
   NO_AUDIO_INPUT = 'no_audio_input_detected',

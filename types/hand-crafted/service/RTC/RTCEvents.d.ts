@@ -1,4 +1,4 @@
-export const enum RTCEvents {
+export enum RTCEvents {
   CREATE_ANSWER_FAILED = 'rtc.create_answer_failed',
   CREATE_OFFER_FAILED = 'rtc.create_offer_failed',
   DATA_CHANNEL_OPEN = 'rtc.data_channel_open',
