@@ -15,5 +15,5 @@ export default class JitsiLocalTrack extends JitsiTrack {
   getCameraFacingMode: () => CameraFacingMode | undefined;
   stopStream: () => void;
   isReceivingData: () => boolean;
-  toString: () => string
+  toString: () => string;
 }

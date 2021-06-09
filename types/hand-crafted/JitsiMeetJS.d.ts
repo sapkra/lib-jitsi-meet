@@ -33,6 +33,15 @@ export type CreateLocalTracksOptions = {
   interval?: number;
   checkAgain?: () => boolean;
   listener?: () => void;
+  frameRate?: {
+    min?: string,
+    max?: string,
+  },
+  desktopSharingFrameRate?: {
+    min?: string,
+    max?: string,
+  },
+  constraints?: any // TODO: figure out this type
 }
 
 export type InitOptions = {
