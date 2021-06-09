@@ -4,6 +4,7 @@ import JitsiMediaDevices from './JitsiMediaDevices';
 import { JitsiConferenceErrors } from './JitsiConferenceErrors';
 import { JitsiConnectionErrors } from './JitsiConnectionErrors';
 import { JitsiTrackErrors } from './JitsiTrackErrors';
+import { JitsiLogLevels } from './JitsiLogLevels';
 import { JitsiMediaDevicesEvents } from './JitsiMediaDevicesEvents';
 import { JitsiTrackEvents } from './JitsiTrackEvents';
 import { JitsiConnectionEvents } from './JitsiConnectionEvents';
@@ -85,7 +86,7 @@ export type JitsiMeetJSType = {
     JitsiTrackError: unknown // TODO:
   };
 
-  logLevels: unknown; // TODO: code refers to Logger.levels and that is in jitsi-meet-logger
+  logLevels: typeof JitsiLogLevels; // TODO: code refers to Logger.levels and that is in jitsi-meet-logger
 
   mediaDevices: typeof JitsiMediaDevices;
 
