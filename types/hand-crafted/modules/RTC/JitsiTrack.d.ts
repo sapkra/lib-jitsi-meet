@@ -1,5 +1,6 @@
 import JitsiConference from '../../JitsiConference';
 import { MediaType } from '../../service/RTC/MediaType';
+import { VideoType } from '../../service/RTC/VideoType';
 import TraceablePeerConnection from './TraceablePeerConnection';
 
 export default class JitsiTrack {
@@ -7,7 +8,7 @@ export default class JitsiTrack {
   stream: MediaStream;
   track: MediaStreamTrack;
   type: MediaType;
-  videoType: unknown;
+  videoType: VideoType;
   disposed: boolean;
   containers: unknown[];
   audioLevel: number;
