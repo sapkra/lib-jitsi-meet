@@ -439,8 +439,7 @@ JitsiConference.prototype._init = function(options = {}) {
 
     // Disable VAD processing on Safari since it causes audio input to
     // fail on some of the mobile devices.
-    if (config.enableTalkWhileMuted && !browser.isWebKitBased()) {
-
+    if (config.enableTalkWhileMuted && browser.supportsVADDetection()) {
         // If VAD processor factory method is provided uses VAD based detection, otherwise fallback to audio level
         // based detection.
         if (config.createVADProcessor) {
@@ -463,7 +462,7 @@ JitsiConference.prototype._init = function(options = {}) {
 
     // Disable noisy mic detection on safari since it causes the audio input to
     // fail on Safari on iPadOS.
-    if (config.enableNoisyMicDetection && !browser.isWebKitBased()) {
+    if (config.enableNoisyMicDetection && browser.supportsVADDetection()) {
         if (config.createVADProcessor) {
             if (!this._audioAnalyser) {
                 this._audioAnalyser = new VADAudioAnalyser(this, config.createVADProcessor);
@@ -926,6 +925,9 @@ JitsiConference.prototype.setDisplayName = function(name) {
 JitsiConference.prototype.setSubject = function(subject) {
     if (this.room && this.isModerator()) {
         this.room.setSubject(subject);
+    } else {
+        logger.warn(`Failed to set subject, ${this.room ? '' : 'not in a room, '}${
+            this.isModerator() ? '' : 'participant is not a moderator'}`);
     }
 };
 
@@ -1126,6 +1128,10 @@ JitsiConference.prototype.replaceTrack = function(oldTrack, newTrack) {
                 newTrack.isVideoTrack() && this.rtc.setVideoType(newTrack.videoType);
             } else {
                 oldTrack && oldTrack.isVideoTrack() && this.rtc.setVideoType(VideoType.NONE);
+            }
+
+            if (this.isMutedByFocus || this.isVideoMutedByFocus) {
+                this._fireMuteChangeEvent(newTrack);
             }
 
             return Promise.resolve();
@@ -1923,7 +1929,7 @@ JitsiConference.prototype._onIncomingCallP2P = function(
 
     let rejectReason;
 
-    if (!this.isP2PEnabled() && !this.isP2PTestModeEnabled()) {
+    if ((!this.isP2PEnabled() && !this.isP2PTestModeEnabled()) || browser.isFirefox() || browser.isWebKitBased()) {
         rejectReason = {
             reason: 'decline',
             reasonDescription: 'P2P disabled',
@@ -2407,6 +2413,9 @@ JitsiConference.prototype.getConnectionState = function() {
  */
 JitsiConference.prototype.setStartMutedPolicy = function(policy) {
     if (!this.isModerator()) {
+        logger.warn(`Failed to set start muted policy, ${this.room ? '' : 'not in a room, '}${
+            this.isModerator() ? '' : 'participant is not a moderator'}`);
+
         return;
     }
     this.startMutedPolicy = policy;
@@ -2794,7 +2803,7 @@ JitsiConference.prototype._acceptP2PIncomingCall = function(
         this.p2pJingleSession.peerconnection,
         remoteID);
 
-    const localTracks = this._getInitialLocalTracks();
+    const localTracks = this.getLocalTracks();
 
     this.p2pJingleSession.acceptOffer(
         jingleOffer,
@@ -3154,7 +3163,7 @@ JitsiConference.prototype._startP2PSession = function(remoteJid) {
         this.p2pJingleSession.peerconnection,
         remoteID);
 
-    const localTracks = this._getInitialLocalTracks();
+    const localTracks = this.getLocalTracks();
 
     this.p2pJingleSession.invite(localTracks);
 };
@@ -3184,7 +3193,7 @@ JitsiConference.prototype._suspendMediaTransferForJvbConnection = function() {
  * @private
  */
 JitsiConference.prototype._maybeStartOrStopP2P = function(userLeftEvent) {
-    if (!this.isP2PEnabled() || this.isP2PTestModeEnabled()) {
+    if (!this.isP2PEnabled() || this.isP2PTestModeEnabled() || browser.isFirefox() || browser.isWebKitBased()) {
         logger.info('Auto P2P disabled');
 
         return;
@@ -3615,6 +3624,9 @@ JitsiConference.prototype.enableLobby = function() {
 JitsiConference.prototype.disableLobby = function() {
     if (this.room && this.isModerator()) {
         this.room.getLobby().disable();
+    } else {
+        logger.warn(`Failed to disable lobby, ${this.room ? '' : 'not in a room, '}${
+            this.isModerator() ? '' : 'participant is not a moderator'}`);
     }
 };
 
@@ -3651,5 +3663,68 @@ JitsiConference.prototype.lobbyDenyAccess = function(id) {
 JitsiConference.prototype.lobbyApproveAccess = function(id) {
     if (this.room) {
         this.room.getLobby().approveAccess(id);
+    }
+};
+
+/**
+ * Returns <tt>true</tt> if AV Moderation support is enabled in the backend.
+ *
+ * @returns {boolean} whether AV Moderation is supported in the backend.
+ */
+JitsiConference.prototype.isAVModerationSupported = function() {
+    return Boolean(this.room && this.room.getAVModeration().isSupported());
+};
+
+/**
+ * Enables AV Moderation.
+ * @param {MediaType} mediaType "audio" or "video"
+ */
+JitsiConference.prototype.enableAVModeration = function(mediaType) {
+    if (this.room && this.isModerator()
+        && (mediaType === MediaType.AUDIO || mediaType === MediaType.VIDEO)) {
+        this.room.getAVModeration().enable(true, mediaType);
+    } else {
+        logger.warn(`Failed to enable AV moderation, ${this.room ? '' : 'not in a room, '}${
+            this.isModerator() ? '' : 'participant is not a moderator, '}${
+            this.room && this.isModerator() ? 'wrong media type passed' : ''}`);
+    }
+};
+
+/**
+ * Disables AV Moderation.
+ * @param {MediaType} mediaType "audio" or "video"
+ */
+JitsiConference.prototype.disableAVModeration = function(mediaType) {
+    if (this.room && this.isModerator()
+        && (mediaType === MediaType.AUDIO || mediaType === MediaType.VIDEO)) {
+        this.room.getAVModeration().enable(false, mediaType);
+    } else {
+        logger.warn(`Failed to disable AV moderation, ${this.room ? '' : 'not in a room, '}${
+            this.isModerator() ? '' : 'participant is not a moderator, '}${
+            this.room && this.isModerator() ? 'wrong media type passed' : ''}`);
+    }
+};
+
+/**
+ * Approve participant access to certain media, allows unmuting audio or video.
+ *
+ * @param {MediaType} mediaType "audio" or "video"
+ * @param id the id of the participant.
+ */
+JitsiConference.prototype.avModerationApprove = function(mediaType, id) {
+    if (this.room && this.isModerator()
+        && (mediaType === MediaType.AUDIO || mediaType === MediaType.VIDEO)) {
+
+        const participant = this.getParticipantById(id);
+
+        if (!participant) {
+            return;
+        }
+
+        this.room.getAVModeration().approve(mediaType, participant.getJid());
+    } else {
+        logger.warn(`AV moderation skipped , ${this.room ? '' : 'not in a room, '}${
+            this.isModerator() ? '' : 'participant is not a moderator, '}${
+            this.room && this.isModerator() ? 'wrong media type passed' : ''}`);
     }
 };

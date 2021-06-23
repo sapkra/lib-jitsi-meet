@@ -1,5 +1,6 @@
 /* global $ */
 
+import MediaDirection from '../../service/RTC/MediaDirection';
 import browser from '../browser';
 
 import SDPUtil from './SDPUtil';
@@ -118,7 +119,7 @@ SDP.prototype.containsSSRC = function(ssrc) {
 };
 
 // add content's to a jingle element
-SDP.prototype.toJingle = function(elem, thecreator, localEndpointId) {
+SDP.prototype.toJingle = function(elem, thecreator) {
     // https://xmpp.org/extensions/xep-0338.html
     SDPUtil.findLines(this.session, 'a=group:').forEach(line => {
         const parts = line.split(' ');
@@ -223,18 +224,6 @@ SDP.prototype.toJingle = function(elem, thecreator, localEndpointId) {
                             let v = kv.split(':', 2)[1];
 
                             v = SDPUtil.filterSpecialChars(v);
-
-                            // Handle a case on Firefox when the browser doesn't produce a 'a:ssrc' line
-                            // with the 'msid' attribute. Jicofo needs a unique identifier to be associated
-                            // with a ssrc and uses the msid attribute for that. Generate the identifier using
-                            // the local endpoint id.
-                            if (name === 'msid' && browser.isFirefox()) {
-                                const sourceIds = v.split(' ');
-
-                                if (sourceIds[0].includes('--') && sourceIds.length > 1) {
-                                    v = `${localEndpointId}-${mline.media} ${sourceIds[1]}`;
-                                }
-                            }
                             elem.attrs({ value: v });
                         }
                         elem.up();
@@ -316,16 +305,16 @@ SDP.prototype.toJingle = function(elem, thecreator, localEndpointId) {
 
                     // eslint-disable-next-line max-depth
                     switch (extmap.direction) {
-                    case 'sendonly':
+                    case MediaDirection.SENDONLY:
                         elem.attrs({ senders: 'responder' });
                         break;
-                    case 'recvonly':
+                    case MediaDirection.RECVONLY:
                         elem.attrs({ senders: 'initiator' });
                         break;
-                    case 'sendrecv':
+                    case MediaDirection.SENDRECV:
                         elem.attrs({ senders: 'both' });
                         break;
-                    case 'inactive':
+                    case MediaDirection.INACTIVE:
                         elem.attrs({ senders: 'none' });
                         break;
                     }
@@ -342,13 +331,13 @@ SDP.prototype.toJingle = function(elem, thecreator, localEndpointId) {
 
         const m = this.media[i];
 
-        if (SDPUtil.findLine(m, 'a=sendrecv', this.session)) {
+        if (SDPUtil.findLine(m, `a=${MediaDirection.SENDRECV}`, this.session)) {
             elem.attrs({ senders: 'both' });
-        } else if (SDPUtil.findLine(m, 'a=sendonly', this.session)) {
+        } else if (SDPUtil.findLine(m, `a=${MediaDirection.SENDONLY}`, this.session)) {
             elem.attrs({ senders: 'initiator' });
-        } else if (SDPUtil.findLine(m, 'a=recvonly', this.session)) {
+        } else if (SDPUtil.findLine(m, `a=${MediaDirection.RECVONLY}`, this.session)) {
             elem.attrs({ senders: 'responder' });
-        } else if (SDPUtil.findLine(m, 'a=inactive', this.session)) {
+        } else if (SDPUtil.findLine(m, `a=${MediaDirection.INACTIVE}`, this.session)) {
             elem.attrs({ senders: 'none' });
         }
 
@@ -643,16 +632,16 @@ SDP.prototype.jingle2media = function(content) {
 
     switch (content.attr('senders')) {
     case 'initiator':
-        sdp += 'a=sendonly\r\n';
+        sdp += `a=${MediaDirection.SENDONLY}\r\n`;
         break;
     case 'responder':
-        sdp += 'a=recvonly\r\n';
+        sdp += `a=${MediaDirection.RECVONLY}\r\n`;
         break;
     case 'none':
-        sdp += 'a=inactive\r\n';
+        sdp += `a=${MediaDirection.INACTIVE}\r\n`;
         break;
     case 'both':
-        sdp += 'a=sendrecv\r\n';
+        sdp += `a=${MediaDirection.SENDRECV}\r\n`;
         break;
     }
     sdp += `a=mid:${content.attr('name')}\r\n`;

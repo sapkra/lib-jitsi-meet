@@ -219,7 +219,9 @@ export default class XMPP extends Listenable {
         if (typeof this.options.enableRemb === 'undefined' || this.options.enableRemb) {
             this.caps.addFeature('http://jitsi.org/remb');
         }
-        if (typeof this.options.enableTcc === 'undefined' || this.options.enableTcc) {
+
+        // Disable TCC on Firefox because of a known issue where BWE is halved on every renegotiation.
+        if (!browser.isFirefox() && (typeof this.options.enableTcc === 'undefined' || this.options.enableTcc)) {
             this.caps.addFeature('http://jitsi.org/tcc');
         }
 
@@ -408,6 +410,10 @@ export default class XMPP extends Listenable {
     _processDiscoInfoIdentities(identities, features) {
         // check for speakerstats
         identities.forEach(identity => {
+            if (identity.type === 'av_moderation') {
+                this.avModerationComponentAddress = identity.name;
+            }
+
             if (identity.type === 'speakerstats') {
                 this.speakerStatsComponentAddress = identity.name;
             }
@@ -436,7 +442,8 @@ export default class XMPP extends Listenable {
             }
         });
 
-        if (this.speakerStatsComponentAddress
+        if (this.avModerationComponentAddress
+            || this.speakerStatsComponentAddress
             || this.conferenceDurationComponentAddress) {
             this.connection.addHandler(this._onPrivateMessage.bind(this), null, 'message', null, null);
         }
@@ -522,6 +529,11 @@ export default class XMPP extends Listenable {
      * @private
      */
     _onSystemMessage(msg) {
+        // proceed only if the message has any of the expected information
+        if ($(msg).find('>services').length === 0 && $(msg).find('>query').length === 0) {
+            return;
+        }
+
         this.sendDiscoInfo = false;
 
         const foundIceServers = this.connection.jingle.onReceiveStunAndTurnCredentials(msg);
@@ -869,6 +881,11 @@ export default class XMPP extends Listenable {
      * the json object. Otherwise, returns false.
      */
     tryParseJSONAndVerify(jsonString) {
+        // ignore empty strings, like message errors
+        if (!jsonString) {
+            return false;
+        }
+
         try {
             const json = JSON.parse(jsonString);
 
@@ -890,7 +907,7 @@ export default class XMPP extends Listenable {
                     + 'structure', 'topic: ', type);
             }
         } catch (e) {
-            logger.error(e);
+            logger.error(`Error parsing json ${jsonString}`, e);
 
             return false;
         }
@@ -909,7 +926,8 @@ export default class XMPP extends Listenable {
         const from = msg.getAttribute('from');
 
         if (!(from === this.speakerStatsComponentAddress
-            || from === this.conferenceDurationComponentAddress)) {
+            || from === this.conferenceDurationComponentAddress
+            || from === this.avModerationComponentAddress)) {
             return true;
         }
 
@@ -917,18 +935,16 @@ export default class XMPP extends Listenable {
             .text();
         const parsedJson = this.tryParseJSONAndVerify(jsonMessage);
 
-        if (parsedJson
-            && parsedJson[JITSI_MEET_MUC_TYPE] === 'speakerstats'
-            && parsedJson.users) {
-            this.eventEmitter.emit(
-                XMPPEvents.SPEAKER_STATS_RECEIVED, parsedJson.users);
+        if (!parsedJson) {
+            return true;
         }
 
-        if (parsedJson
-            && parsedJson[JITSI_MEET_MUC_TYPE] === 'conference_duration'
-            && parsedJson.created_timestamp) {
-            this.eventEmitter.emit(
-                XMPPEvents.CONFERENCE_TIMESTAMP_RECEIVED, parsedJson.created_timestamp);
+        if (parsedJson[JITSI_MEET_MUC_TYPE] === 'speakerstats' && parsedJson.users) {
+            this.eventEmitter.emit(XMPPEvents.SPEAKER_STATS_RECEIVED, parsedJson.users);
+        } else if (parsedJson[JITSI_MEET_MUC_TYPE] === 'conference_duration' && parsedJson.created_timestamp) {
+            this.eventEmitter.emit(XMPPEvents.CONFERENCE_TIMESTAMP_RECEIVED, parsedJson.created_timestamp);
+        } else if (parsedJson[JITSI_MEET_MUC_TYPE] === 'av_moderation') {
+            this.eventEmitter.emit(XMPPEvents.AV_MODERATION_RECEIVED, parsedJson);
         }
 
         return true;
