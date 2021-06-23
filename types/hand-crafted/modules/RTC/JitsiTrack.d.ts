@@ -3,6 +3,15 @@ import { MediaType } from '../../service/RTC/MediaType';
 import TraceablePeerConnection from './TraceablePeerConnection';
 
 export default class JitsiTrack {
+  conference: JitsiConference;
+  stream: MediaStream;
+  track: MediaStreamTrack;
+  type: MediaType;
+  videoType: unknown;
+  disposed: boolean;
+  containers: unknown[];
+  audioLevel: number;
+  handlers: Map<unknown, unknown>;
   constructor( conference: JitsiConference, stream: unknown, track: unknown, streamInactiveHandler: unknown, trackMediaType: unknown, videoType: unknown ); // TODO:
   getType: () => MediaType;
   isAudioTrack: () => boolean;
