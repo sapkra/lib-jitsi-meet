@@ -96,23 +96,11 @@ export default class BrowserCapabilities {
      */
     supportsRTTStatistics(): boolean;
     /**
-     * Checks if the browser uses plan B.
-     *
-     * @returns {boolean}
-     */
-    usesPlanB(): boolean;
-    /**
      * Checks if the browser uses SDP munging for turning on simulcast.
      *
      * @returns {boolean}
      */
     usesSdpMungingForSimulcast(): boolean;
-    /**
-     * Checks if the browser uses unified plan.
-     *
-     * @returns {boolean}
-     */
-    usesUnifiedPlan(): boolean;
     /**
      * Checks if the browser uses webrtc-adapter. All browsers except React Native do.
      *
@@ -139,12 +127,17 @@ export default class BrowserCapabilities {
      */
     supportsAudioRed(): boolean;
     /**
-     * Checks if the browser supports the "sdpSemantics" configuration option.
-     * https://webrtc.org/web-apis/chrome/unified-plan/
+     * Checks if the browser supports unified plan.
      *
      * @returns {boolean}
      */
-    supportsSdpSemantics(): boolean;
+    supportsUnifiedPlan(): boolean;
+    /**
+     * Checks if the browser supports voice activity detection via the @type {VADAudioAnalyser} service.
+     *
+     * @returns {boolean}
+     */
+    supportsVADDetection(): boolean;
     /**
      * Returns the version of a Chromium based browser.
      *

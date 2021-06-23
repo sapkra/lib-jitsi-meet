@@ -297,27 +297,6 @@ export default class XmppConnection extends Listenable {
      */
     private _tryResumingConnection;
 }
-/**
- * Object
- */
-export type DeferredSendIQ = {
-    /**
-     * - The IQ to send.
-     */
-    iq: Element;
-    /**
-     * - The resolve method of the deferred Promise.
-     */
-    resolve: Function;
-    /**
-     * - The reject method of the deferred Promise.
-     */
-    reject: Function;
-    /**
-     * - The ID of the timeout task that needs to be cleared, before sending the IQ.
-     */
-    timeout: number;
-};
 import Listenable from "../util/Listenable";
 import LastSuccessTracker from "./StropheLastSuccess";
 import ResumeTask from "./ResumeTask";

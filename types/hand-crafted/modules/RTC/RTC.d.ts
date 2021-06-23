@@ -16,10 +16,11 @@ export default class RTC extends Listenable {
   static addListener: ( eventType: string, listener: unknown ) => void; // TODO: this should be typed to an enum of eventTypes with appropriate definition for the listeners
   static removeListener: ( eventType: string, listener: unknown ) => void; // TODO: this should be typed to an enum of eventTypes with appropriate definition for the listeners
   static init: ( options: unknown ) => unknown; // TODO:
-  createPeerConnection: ( signalling: SignalingLayer, iceConfig: unknown, isP2P: boolean, options: { enableInsertableStreams: boolean, disableSimulcast: boolean, disableRtx: boolean, disableH264: boolean, preferH264: boolean, startSilent: boolean } ) => TraceablePeerConnection; // TODO:
+  createPeerConnection: ( signalling: SignalingLayer, iceConfig: unknown, isP2P: boolean, options: { enableInsertableStreams: boolean, disableSimulcast: boolean, disableRtx: boolean, startSilent: boolean } ) => TraceablePeerConnection; // TODO:
   addLocalTrack: ( track: unknown ) => void; // TODO:
   getLocalVideoTrack: () => JitsiLocalTrack | undefined;
   getLocalAudioTrack: () => JitsiLocalTrack | undefined;
+  getLocalEndpointId: () => string;
   getLocalTracks: ( mediaType: MediaType ) => JitsiLocalTrack[];
   getRemoteTracks: ( mediaType: MediaType ) => JitsiRemoteTrack[];
   setAudioMute: ( value: unknown ) => Promise<unknown>; // TODO:

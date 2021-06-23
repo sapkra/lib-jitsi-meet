@@ -1,10 +1,11 @@
+import { MediaDirection } from '../../service/RTC/MediaDirection';
 import { MediaType } from '../../service/RTC/MediaType';
 
 export function parsePrimarySSRC( group: unknown ): number; // TODO:
 
 export class MLineWrap {
   ssrcs: unknown[]; // TODO:
-  direction: string;
+  direction: MediaDirection;
   ssrcGroups: unknown[]; // TODO:
   getSSRCAttrValue: ( ssrcNumber: number, attrName: string ) => string | undefined;
   removeSSRC: ( ssrcNum: number ) => void;

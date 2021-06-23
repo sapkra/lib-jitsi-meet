@@ -2,6 +2,7 @@ import XmppConnection from './XmppConnection';
 import Lobby from './Lobby';
 import Listenable from '../util/Listenable';
 import { MediaType } from '../../service/RTC/MediaType';
+import AVModeration from "./AVModeration";
 
 declare namespace parser {
   function packet2JSON( xmlElement: unknown, nodes: unknown[] ): void; // TODO:
@@ -52,6 +53,7 @@ export default class ChatRoom extends Listenable {
   dial: ( number: string ) => unknown; // TODO:
   hangup: () => unknown; // TODO:
   getLobby: () => Lobby;
+  getAVModeration(): AVModeration;
   getPhoneNumber: () => string;
   getPhonePin: () => string;
   getMeetingId: () => string;

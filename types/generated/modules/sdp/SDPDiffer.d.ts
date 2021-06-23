@@ -13,6 +13,13 @@ export default class SDPDiffer {
     constructor(mySDP: any, otherSDP: any);
     mySDP: any;
     otherSDP: any;
+    /**
+     * Returns map of MediaChannel that contains media contained in
+     * 'mySDP', but not contained in 'otherSdp'. Mapped by channel idx.
+     */
     getNewMedia(): {};
+    /**
+     * TODO: document!
+     */
     toJingle(modify: any): boolean;
 }

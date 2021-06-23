@@ -11,9 +11,11 @@ export default class LocalSdpMunger {
      * Creates new <tt>LocalSdpMunger</tt> instance.
      *
      * @param {TraceablePeerConnection} tpc
+     * @param {string} localEndpointId - The endpoint id of the local user.
      */
-    constructor(tpc: any);
+    constructor(tpc: any, localEndpointId: string);
     tpc: any;
+    localEndpointId: string;
     /**
      * Makes sure that muted local video tracks associated with the parent
      * {@link TraceablePeerConnection} are described in the local SDP. It's done
@@ -30,6 +32,15 @@ export default class LocalSdpMunger {
      * @private
      */
     private _addMutedLocalVideoTracksToSDP;
+    /**
+     * Returns a string that can be set as the MSID attribute for a source.
+     *
+     * @param {string} mediaType - Media type of the source.
+     * @param {string} trackId - Id of the MediaStreamTrack associated with the source.
+     * @param {string} streamId - Id of the MediaStream associated with the source.
+     * @returns {string|null}
+     */
+    _generateMsidAttribute(mediaType: string, trackId: string, streamId?: string): string | null;
     /**
      * Modifies 'cname', 'msid', 'label' and 'mslabel' by appending
      * the id of {@link LocalSdpMunger#tpc} at the end, preceding by a dash

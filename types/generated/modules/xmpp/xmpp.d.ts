@@ -103,6 +103,7 @@ export default class XMPP extends Listenable {
      * @private
      */
     private _processDiscoInfoIdentities;
+    avModerationComponentAddress: any;
     speakerStatsComponentAddress: any;
     conferenceDurationComponentAddress: any;
     lobbySupported: boolean;

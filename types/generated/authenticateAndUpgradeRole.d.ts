@@ -56,14 +56,14 @@ export default function authenticateAndUpgradeRole({ id, password, onCreateResou
 export type UpgradeRoleError = {
     /**
      * - One of
-     * {@link JitsiConnectionErrors} which occurred when trying to connect to the
+     * {@link JitsiConnectionErrors } which occurred when trying to connect to the
      * XMPP server.
      */
     connectionError?: any;
     /**
      * - One of XMPP error conditions
      * returned by Jicofo on authentication attempt. See
-     * {@link https://xmpp.org/rfcs/rfc3920.html#streams-error}.
+     * {@link https ://xmpp.org/rfcs/rfc3920.html#streams-error}.
      */
     authenticationError?: string;
     /**

@@ -143,4 +143,8 @@ export default class JitsiConference {
   joinLobby: ( displayName: string, email: string ) => Promise<never>;
   lobbyDenyAccess: ( id: string ) => void;
   lobbyApproveAccess: ( id: string ) => void;
+  isAVModerationSupported(): boolean;
+  enableAVModeration: ( mediaType: MediaType ) => void;
+  disableAVModeration: ( mediaType: MediaType ) => void;
+  avModerationApprove: ( mediaType: MediaType, id: string ) => void;
 }

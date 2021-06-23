@@ -29,9 +29,17 @@ export default class SDP {
      * @type {boolean}
      */
     removeUdpCandidates: boolean;
+    /**
+     * Returns map of MediaChannel mapped per channel idx.
+     */
     getMediaSsrcMap(): {};
+    /**
+     * Returns <tt>true</tt> if this SDP contains given SSRC.
+     * @param ssrc the ssrc to check.
+     * @returns {boolean} <tt>true</tt> if this SDP contains given SSRC.
+     */
     containsSSRC(ssrc: any): boolean;
-    toJingle(elem: any, thecreator: any, localEndpointId: any): any;
+    toJingle(elem: any, thecreator: any): any;
     transportToJingle(mediaindex: any, elem: any): void;
     rtcpFbToJingle(mediaindex: any, elem: any, payloadtype: any): void;
     rtcpFbFromJingle(elem: any, payloadtype: any): string;

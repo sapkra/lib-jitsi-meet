@@ -22,7 +22,6 @@ declare class RTCUtils extends Listenable {
         new (configuration?: RTCConfiguration): RTCPeerConnection;
         prototype: RTCPeerConnection;
         generateCertificate(keygenAlgorithm: AlgorithmIdentifier): Promise<RTCCertificate>;
-        getDefaultIceServers(): RTCIceServer[];
     };
     attachMediaStream: Function;
     getStreamID: ({ id }: {

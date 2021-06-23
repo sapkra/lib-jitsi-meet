@@ -13,13 +13,12 @@ export default class BrowserCapabilities {
   supportsPerformanceObserver: () => boolean;
   supportsReceiverStats: () => boolean;
   supportsRTTStatistics: () => boolean;
-  usesPlanB: () => boolean;
   usesSdpMungingForSimulcast: () => boolean;
-  usesUnifiedPlan: () => boolean;
   usesAdapter: () => boolean;
   usesRidsForSimulcast: () => boolean;
   supportsGetDisplayMedia: () => boolean;
   supportsInsertableStreams: () => boolean;
   supportsAudioRed: () => boolean;
-  supportsSdpSemantics: () => boolean;
+  supportsUnifiedPlan: () => boolean;
+  supportsVADDetection: () => boolean;
 }

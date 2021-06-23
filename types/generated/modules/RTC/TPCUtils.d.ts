@@ -34,14 +34,13 @@ export class TPCUtils {
         scaleResolutionDownBy: number;
     }[];
     /**
-     * Ensures that the ssrcs associated with a FID ssrc-group appear in the correct order, i.e.,
-     * the primary ssrc first and the secondary rtx ssrc later. This is important for unified
-     * plan since we have only one FID group per media description.
-     * @param {Object} description the webRTC session description instance for the remote
-     * description.
-     * @private
+     * Returns the transceiver associated with a given RTCRtpSender/RTCRtpReceiver.
+     *
+     * @param {string} mediaType - type of track associated with the transceiver 'audio' or 'video'.
+     * @param {JitsiLocalTrack} localTrack - local track to be used for lookup.
+     * @returns {RTCRtpTransceiver}
      */
-    private ensureCorrectOrderOfSsrcs;
+    _findTransceiver(mediaType: string, localTrack?: any): RTCRtpTransceiver;
     /**
      * Obtains stream encodings that need to be configured on the given track based
      * on the track media type and the simulcast setting.
@@ -58,6 +57,15 @@ export class TPCUtils {
     }[] | {
         active: boolean;
     }[];
+    /**
+     * Ensures that the ssrcs associated with a FID ssrc-group appear in the correct order, i.e.,
+     * the primary ssrc first and the secondary rtx ssrc later. This is important for unified
+     * plan since we have only one FID group per media description.
+     * @param {Object} description the webRTC session description instance for the remote
+     * description.
+     * @private
+     */
+    private ensureCorrectOrderOfSsrcs;
     /**
      * Takes in a *unified plan* offer and inserts the appropriate
      * parameters for adding simulcast receive support.

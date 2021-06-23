@@ -18,5 +18,13 @@ declare class EventEmitterForwarder {
     constructor(src: object, dest: object);
     src: any;
     dest: any;
+    /**
+     * Adds event to be forwarded from src to dest.
+     * @param srcEvent {string} the event that EventEmitterForwarder is listening
+     * for.
+     * @param dstEvent {string} the event that will be fired from dest.
+     * @param arguments all other passed arguments are going to be fired with
+     * dstEvent.
+     */
     forward(...args: any[]): void;
 }

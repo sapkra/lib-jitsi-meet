@@ -7,5 +7,6 @@ export class OlmAdapter extends Listenable {
   static isSupported: () => boolean;
   updateCurrentKey: ( key: Uint8Array | boolean ) => number;
   clearParticipantSession: ( participant: unknown ) => void; // TODO:
+  clearAllParticipantsSessions: () => void;
   updateKey: ( key: Uint8Array | boolean ) => Promise<number>;
 }

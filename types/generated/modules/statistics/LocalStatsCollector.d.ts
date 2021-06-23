@@ -22,10 +22,22 @@ declare class LocalStatsCollector {
     intervalMilis: any;
     audioLevel: number;
     callback: any;
+    /**
+     * Starts the collecting the statistics.
+     */
     start(): void;
+    /**
+     * Stops collecting the statistics.
+     */
     stop(): void;
 }
 declare namespace LocalStatsCollector {
+    /**
+     * Checks if the environment has the necessary conditions to support
+     * collecting stats from local streams.
+     *
+     * @returns {boolean}
+     */
     function isLocalStatsSupported(): boolean;
 }
 export default LocalStatsCollector;

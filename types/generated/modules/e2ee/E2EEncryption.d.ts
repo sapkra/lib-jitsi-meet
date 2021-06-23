@@ -17,7 +17,6 @@ export class E2EEncryption {
     conference: any;
     _conferenceJoined: boolean;
     _enabled: boolean;
-    _initialized: boolean;
     _key: any;
     _enabling: Deferred;
     _e2eeCtx: E2EEContext;

@@ -13,12 +13,10 @@ import TPCUtils from './TPCUtils';
 export default function TraceablePeerConnection( rtc: RTC, id: number, signalingLayer: unknown, iceConfig: unknown, constraints: unknown, isP2P: boolean, options: {
   disableSimulcast: boolean;
   disableRtx: boolean;
-  capScreenshareBitrate: boolean;
   disabledCodec: string;
-  disableH264: boolean;
-  preferH264: boolean;
   preferredCodec: string;
   startSilent: boolean;
+  usesUnifiedPlan: boolean;
 } ): void; // TODO:
 
 export default class TraceablePeerConnection {
@@ -28,7 +26,28 @@ export default class TraceablePeerConnection {
   isP2P: boolean;
   remoteTracks: Map<number, Map<MediaType, JitsiRemoteTrack>>; // TODO:
   localTracks: Map<number, JitsiLocalTrack>; // TODO:
-  localSSRCs: Map<number, unknown>; // TODO: JSDocs refers to TPCSSRCInfo but that doesn't exist
+  localSSRCs: Map<number, {
+    /**
+     * an array which holds all track's SSRCs
+     */
+    ssrcs: Array<number>;
+    /**
+     * an array stores all track's SSRC
+     * groups
+     */
+    groups: {
+      /**
+       * the SSRC groups semantics
+       */
+      semantics: string;
+      /**
+       * group's SSRCs in order where the first
+       * one is group's primary SSRC, the second one is secondary (RTX) and so
+       * on...
+       */
+      ssrcs: Array<number>;
+    }[];
+  }>;
   localUfrag: unknown; // TODO:
   signalingLayer: SignalingLayer; // TODO:
   options: unknown; // TODO:
@@ -37,7 +56,7 @@ export default class TraceablePeerConnection {
   tpcUtils: TPCUtils;
   updateLog: Array<unknown>; // TODO:
   stats: unknown; // TODO:
-  statsinterval: unknown; // TODO:
+  statsinterval: number;
   maxstats: unknown; // TODO:
   interop: unknown; // TODO: unknown = Interop refers to @jitsi/sdp-interop
   simulcast: unknown; // TODO: unknown = Simulcast refers to @jitsi/sdp-simulcast
@@ -96,7 +115,7 @@ export default class TraceablePeerConnection {
   createAnswer: ( constraints: unknown ) => unknown; // TODO:
   createOffer: ( constraints: unknown ) => unknown; // TODO:
   addIceCandidate: ( candidate: unknown ) => unknown; // TODO:
-  generateNewStreamSSRCInfo: ( track: JitsiLocalTrack ) => unknown; // TODO: JSDocs unknown = TPCSSRCInfo which doesn't exist
+  generateNewStreamSSRCInfo: (track: JitsiLocalTrack) => TraceablePeerConnection['localSSRCs'];
   getActiveSimulcastStreams: () => number;
   getStats: () => unknown; // TODO:
   toString: () => string;

@@ -59,6 +59,11 @@ export class OlmAdapter extends Listenable {
      */
     clearParticipantSession(participant: any): void;
     /**
+     * Frees the olmData sessions for all participants.
+     *
+     */
+    clearAllParticipantsSessions(): void;
+    /**
      * Internal helper to bootstrap the olm library.
      *
      * @returns {Promise<void>}

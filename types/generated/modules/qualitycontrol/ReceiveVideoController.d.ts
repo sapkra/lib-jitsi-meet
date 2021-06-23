@@ -72,9 +72,9 @@ export class ReceiveVideoController {
     constructor(conference: any, rtc: any);
     _conference: any;
     _rtc: any;
-    _receiverVideoConstraints: ReceiverVideoConstraints;
-    _lastN: number;
+    _lastN: any;
     _maxFrameHeight: number;
+    _receiverVideoConstraints: ReceiverVideoConstraints;
     _selectedEndpoints: any[];
     /**
      * Handles the {@link JitsiConferenceEvents.MEDIA_SESSION_STARTED}, that is when the conference creates new media

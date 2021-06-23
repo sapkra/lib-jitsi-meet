@@ -38,6 +38,7 @@ export default class ChatRoom extends Listenable {
     options: any;
     moderator: Moderator;
     lobby: Lobby;
+    avModeration: AVModeration;
     lastPresences: {};
     phoneNumber: any;
     phonePin: any;
@@ -323,6 +324,10 @@ export default class ChatRoom extends Listenable {
      */
     getLobby(): Lobby;
     /**
+     * @returns {AVModeration}
+     */
+    getAVModeration(): AVModeration;
+    /**
      * Returns the phone number for joining the conference.
      */
     getPhoneNumber(): any;
@@ -369,4 +374,5 @@ import Listenable from "../util/Listenable";
 import XmppConnection from "./XmppConnection";
 import Moderator from "./moderator";
 import Lobby from "./Lobby";
+import AVModeration from "./AVModeration";
 import * as MediaType from "../../service/RTC/MediaType";

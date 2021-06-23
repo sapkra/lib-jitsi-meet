@@ -43,20 +43,16 @@ export default class JingleSessionPC extends JingleSession {
     static parseMaxFrameHeight(jingleContents: any): number | null;
     /**
      * Creates new <tt>JingleSessionPC</tt>
-     * @param {string} sid the Jingle Session ID - random string which
-     * identifies the session
+     * @param {string} sid the Jingle Session ID - random string which identifies the session
      * @param {string} localJid our JID
      * @param {string} remoteJid remote peer JID
      * @param {XmppConnection} connection - The XMPP connection instance.
-     * @param mediaConstraints the media constraints object passed to
-     * createOffer/Answer, as defined by the WebRTC standard
-     * @param iceConfig the ICE servers config object as defined by the WebRTC
-     * standard.
-     * @param {boolean} isP2P indicates whether this instance is
-     * meant to be used in a direct, peer to peer connection or <tt>false</tt>
-     * if it's a JVB connection.
-     * @param {boolean} isInitiator indicates if it will be the side which
-     * initiates the session.
+     * @param mediaConstraints the media constraints object passed to createOffer/Answer, as defined
+     * by the WebRTC standard
+     * @param iceConfig the ICE servers config object as defined by the WebRTC standard.
+     * @param {boolean} isP2P indicates whether this instance is meant to be used in a direct, peer to
+     * peer connection or <tt>false</tt> if it's a JVB connection.
+     * @param {boolean} isInitiator indicates if it will be the side which initiates the session.
      * @constructor
      *
      * @implements {SignalingLayer}
@@ -205,6 +201,7 @@ export default class JingleSessionPC extends JingleSession {
     wasstable: boolean;
     webrtcIceUdpDisable: boolean;
     webrtcIceTcpDisable: boolean;
+    usesUnifiedPlan: any;
     peerconnection: any;
     /**
      * Remote preference for receive video max frame height.
