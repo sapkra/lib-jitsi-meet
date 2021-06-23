@@ -1,4 +1,4 @@
-export const enum JitsiTrackErrors {
+export enum JitsiTrackErrors {
   CONSTRAINT_FAILED = 'gum.constraint_failed',
   ELECTRON_DESKTOP_PICKER_ERROR = 'gum.electron_desktop_picker_error',
   ELECTRON_DESKTOP_PICKER_NOT_FOUND = 'gum.electron_desktop_picker_not_found',

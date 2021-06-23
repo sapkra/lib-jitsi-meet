@@ -25,4 +25,5 @@ export default class JitsiTrack {
   setAudioLevel: ( audioLevel: number, tpc: TraceablePeerConnection ) => void;
   getMSID: () => string | null;
   setAudioOutput: ( audioOutputDeviceId: '' | string ) => Promise<unknown>; // TODO: what will this promise contain?
+  addEventListener: (type: string, listener: (event: any) => void) => void;
 }

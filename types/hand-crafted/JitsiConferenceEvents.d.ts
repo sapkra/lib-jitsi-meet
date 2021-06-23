@@ -1,4 +1,4 @@
-export const enum JitsiConferenceEvents {
+export enum JitsiConferenceEvents {
   AUDIO_INPUT_STATE_CHANGE = 'conference.audio_input_state_changed',
   AUTH_STATUS_CHANGED = 'conference.auth_status_changed',
   BEFORE_STATISTICS_DISPOSED = 'conference.beforeStatisticsDisposed',

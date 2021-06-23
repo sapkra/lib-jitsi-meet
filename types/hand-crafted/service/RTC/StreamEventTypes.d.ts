@@ -1,4 +1,4 @@
-export const enum StreamEventTypes {
+export enum StreamEventTypes {
   EVENT_TYPE_LOCAL_CREATED = 'stream.local_created',
   EVENT_TYPE_LOCAL_CHANGED = 'stream.local_changed',
   EVENT_TYPE_LOCAL_ENDED = 'stream.local_ended',

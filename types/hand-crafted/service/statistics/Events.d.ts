@@ -1,4 +1,4 @@
-declare const enum Events {
+declare enum Events {
   AUDIO_LEVEL = 'statistics.audioLevel',
   BEFORE_DISPOSED = 'statistics.before_disposed',
   BYTE_SENT_STATS = 'statistics.byte_sent_stats',

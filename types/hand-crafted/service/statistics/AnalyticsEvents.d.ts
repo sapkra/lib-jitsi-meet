@@ -1,6 +1,6 @@
 import { MediaType } from "../RTC/MediaType";
 
-export const enum AnalyticsEvents {
+export enum AnalyticsEvents {
   TYPE_OPERATIONAL = 'operational',
   TYPE_PAGE = 'page',
   TYPE_TRACK = 'track',

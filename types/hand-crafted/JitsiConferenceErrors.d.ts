@@ -1,4 +1,4 @@
-export const enum JitsiConferenceErrors {
+export enum JitsiConferenceErrors {
   AUTHENTICATION_REQUIRED = 'conference.authenticationRequired',
   CHAT_ERROR = 'conference.chatError',
   CONFERENCE_DESTROYED = 'conference.destroyed',

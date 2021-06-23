@@ -1,4 +1,4 @@
-export const enum JitsiConnectionEvents {
+export enum JitsiConnectionEvents {
   CONNECTION_DISCONNECTED = 'connection.connectionDisconnected',
   CONNECTION_ESTABLISHED = 'connection.connectionEstablished',
   CONNECTION_FAILED = 'connection.connectionFailed',

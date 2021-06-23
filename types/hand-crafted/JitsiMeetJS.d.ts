@@ -4,6 +4,7 @@ import JitsiMediaDevices from './JitsiMediaDevices';
 import { JitsiConferenceErrors } from './JitsiConferenceErrors';
 import { JitsiConnectionErrors } from './JitsiConnectionErrors';
 import { JitsiTrackErrors } from './JitsiTrackErrors';
+import { JitsiLogLevels } from './JitsiLogLevels';
 import { JitsiMediaDevicesEvents } from './JitsiMediaDevicesEvents';
 import { JitsiTrackEvents } from './JitsiTrackEvents';
 import { JitsiConnectionEvents } from './JitsiConnectionEvents';
@@ -32,6 +33,15 @@ export type CreateLocalTracksOptions = {
   interval?: number;
   checkAgain?: () => boolean;
   listener?: () => void;
+  frameRate?: {
+    min?: string,
+    max?: string,
+  },
+  desktopSharingFrameRate?: {
+    min?: string,
+    max?: string,
+  },
+  constraints?: any // TODO: figure out this type
 }
 
 export type InitOptions = {
@@ -59,33 +69,33 @@ export type JitsiMeetJSType = {
   //USER_MEDIA_SLOW_PROMISE_TIMEOUT: 1000;
 
   constants: {
-    participantConnectionStatus: ParticipantConnectionStatus,
+    participantConnectionStatus: typeof ParticipantConnectionStatus,
     recording: typeof RecordingConstants,
-    sipVideoGW: VideoSIPGWConstants,
-    transcriptionStatus: JitsiTranscriptionStatus,
+    sipVideoGW: typeof VideoSIPGWConstants,
+    transcriptionStatus: typeof JitsiTranscriptionStatus,
   };
 
   events: {
-    conference: JitsiConferenceEvents,
-    connection: JitsiConnectionEvents,
-    detection: DetectionEvents,
-    track: JitsiTrackEvents,
-    mediaDevices: JitsiMediaDevicesEvents,
-    connectionQuality: ConnectionQualityEvents,
-    e2eping: E2ePingEvents
+    conference: typeof JitsiConferenceEvents,
+    connection: typeof JitsiConnectionEvents,
+    detection: typeof DetectionEvents,
+    track: typeof JitsiTrackEvents,
+    mediaDevices: typeof JitsiMediaDevicesEvents,
+    connectionQuality: typeof ConnectionQualityEvents,
+    e2eping: typeof E2ePingEvents
   };
 
   errors: {
-    conference: JitsiConferenceErrors,
-    connection: JitsiConnectionErrors,
-    track: JitsiTrackErrors
+    conference: typeof JitsiConferenceErrors,
+    connection: typeof JitsiConnectionErrors,
+    track: typeof JitsiTrackErrors
   };
 
   errorTypes: {
     JitsiTrackError: unknown // TODO:
   };
 
-  logLevels: unknown; // TODO: code refers to Logger.levels and that is in jitsi-meet-logger
+  logLevels: typeof JitsiLogLevels; // TODO: code refers to Logger.levels and that is in jitsi-meet-logger
 
   mediaDevices: typeof JitsiMediaDevices;
 
@@ -139,3 +149,6 @@ export type JitsiMeetJSType = {
     browser: BrowserCapabilities
   }
 }
+
+declare var _default: JitsiMeetJSType;
+export default _default;

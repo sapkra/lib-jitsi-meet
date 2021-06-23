@@ -1,4 +1,4 @@
-export const enum JitsiTrackEvents {
+export enum JitsiTrackEvents {
   LOCAL_TRACK_STOPPED = 'track.stopped',
   TRACK_AUDIO_LEVEL_CHANGED = 'track.audioLevelsChanged',
   TRACK_AUDIO_OUTPUT_CHANGED = 'track.audioOutputChanged',

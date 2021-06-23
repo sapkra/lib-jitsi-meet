@@ -1,4 +1,4 @@
-export const enum JitsiTranscriptionStatus {
+export enum JitsiTranscriptionStatus {
   ON = 'on',
   OFF = 'off'
 }

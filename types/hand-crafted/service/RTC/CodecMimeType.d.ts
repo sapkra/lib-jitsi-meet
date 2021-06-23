@@ -1,4 +1,4 @@
-export const enum CodecMimeType {
+export enum CodecMimeType {
   H264 = 'h264',
   OPUS = 'opus',
   VP8 = 'vp8',
