@@ -7,7 +7,7 @@ export default class JitsiLocalTrack extends JitsiTrack {
   setEffect: ( effect: unknown ) => Promise<unknown>; // TODO:
   mute: () => Promise<unknown>;
   unmute: () => Promise<unknown>;
-  dispose: () => Promise<unknown>;
+  dispose: () => Promise<void>;
   isMuted: () => boolean;
   isLocal: () => true;
   getDeviceId: () => string;
